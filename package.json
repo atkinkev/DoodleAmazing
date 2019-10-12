@@ -29,6 +29,10 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "babel": "^6.23.0",
+    "canny-edge-detector": "^1.0.0",
+    "image-js": "^0.21.7",
+    "jsfeat": "0.0.8",
     "phaser": "^3.16.2"
   }
 }

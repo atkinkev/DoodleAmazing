@@ -1,9 +1,10 @@
 import Phaser from "phaser";
 import logoImg from "./assets/logo.png";
+import {toGreyScale} from './doodleReader';
 
 const config = {
   type: Phaser.AUTO,
-  parent: "phaser-example",
+  parent: "doodle-amazing",
   width: 800,
   height: 600,
   scene: {
@@ -30,3 +31,6 @@ function create() {
     loop: -1
   });
 }
+
+// Testing calls from another js file
+//console.log(doodleReader.invertImage());
