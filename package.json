@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "babel": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
     "canny-edge-detector": "^1.0.0",
     "image-js": "^0.21.7",
     "jsfeat": "0.0.8",
