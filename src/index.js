@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import logoImg from "./assets/logo.png";
 import {toGreyScale} from './doodleReader';
+var fs = require('fs');
 require("babel-polyfill")
 const { Image } = require('image-js');
 
@@ -42,6 +43,8 @@ async function execute() {
     .grey() // convert the image to greyscale.
     .resize({ width: 200 }) // resize the image, forcing a width of 200 pixels. The height is computed automatically to preserve the aspect ratio.
     .rotate(30); // rotate the image clockwise by 30 degrees.
-  //return grey.save('cat.png');
-  console.log(grey.width);
+    fs.writeFile('logo.png', '', 'binary', function(err){
+        if (err) throw err
+        console.log('File saved.')
+    })
 }

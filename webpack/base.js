@@ -4,6 +4,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
+  node: {
+    fs: "empty"
+  }
   mode: "development",
   devtool: "eval-source-map",
   module: {
@@ -37,4 +40,5 @@ module.exports = {
       template: "./index.html"
     })
   ]
+
 };
