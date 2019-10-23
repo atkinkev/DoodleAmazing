@@ -1,9 +1,12 @@
 import Phaser from "phaser";
 import logoImg from "./assets/logo.png";
-import {readImage} from './doodleReader';
+import {getEdgeCoordinates} from './doodleReader';
+import {findEdges} from './doodleReader';
+const canny = require('canny-edge-detector');
 require("babel-polyfill");
 
-readImage();
+getEdgeCoordinates();
+findEdges();
 
 const config = {
   type: Phaser.AUTO,
@@ -34,3 +37,19 @@ function create() {
     loop: -1
   });
 }
+
+
+
+
+// Beginning of image upload
+var inputElement = document.getElementById("pic");
+
+inputElement.onchange = function(event) {
+   var image = inputElement.files[0];
+
+   var reader = new FileReader();
+   reader.onload = function(e){
+    var img = new Image();
+   }
+}
+
