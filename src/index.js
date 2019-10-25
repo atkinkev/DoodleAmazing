@@ -1,11 +1,12 @@
 import Phaser from "phaser";
-// import logoImg from "./assets/logo.png";
+import logoImg from "./assets/logo.png";
 import {uploadImage} from './doodleReader';
 import {prepImage} from './doodleReader';
 const canny = require('canny-edge-detector');
 require("babel-polyfill");
 
-uploadImage();
+setup();
+//uploadImage();
 
 function setup(){
   const config = {
@@ -22,7 +23,7 @@ function setup(){
   const game = new Phaser.Game(config);
 
   function preload() {
-    this.load.image("logo", uploadImage);
+    this.load.image("logo", logoImg);
   }
 
   function create() {
