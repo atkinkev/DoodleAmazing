@@ -7,12 +7,12 @@ KEA 10/27/2019
 * Commented out upload flow so game can easily be tweaked without upload flow each time 
 * Added fix for jpeg images not working 
 
-** Up Next ** 
-[] Improve coordinate detection algorithm 
-[] Improve landing page looks 
-[] Understand wall creation in Phaser 
-[] Discuss game flow and integration 
-[] Discuss necessity of Cordova vs running in mobile browser 
+Up Next  
+* Improve coordinate detection algorithm 
+* Improve landing page looks 
+* Understand wall creation in Phaser 
+* Discuss game flow and integration 
+* Discuss necessity of Cordova vs running in mobile browser 
 
 ## Setup
 Setup npm to include all packages:
