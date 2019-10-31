@@ -1,6 +1,11 @@
 # Doodle Amazing
 
 ## Changelog
+KEA 10/31/2019
+* Experimented with creating a landing screen  
+* Ported to Mobile!
+* Ported to Browser!
+
 KEA 10/27/2019
 * Updated game flow to begin with image prompt and game not yet loaded in 
 * Added complete processing pipeline image upload -> canny edges -> coordinates read -> game starts 
@@ -19,8 +24,15 @@ Setup npm to include all packages:
 npm install
 
 ## Running in Test
-npm start  
-Game will be at: http://localhost/8080  
+run 'npm start'  
+Game will be at: http://localhost/8080   
+-- Open new terminal  
+run 'cordova run <device>'  
+Game will be run on device specified  
+
+npm export
+Bundle will be created in www Cordova folder
+cordova 
 
 ## Deploying
 npm run build  
