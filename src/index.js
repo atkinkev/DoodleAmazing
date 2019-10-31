@@ -10,7 +10,6 @@ require("babel-polyfill");
 ** Behavior: Waits for user to input image using input element on landing page
 ** Returns: Black and White canny edge detected image
 */
-/*
 var inputElement = document.getElementById("pic");
 inputElement.onchange = function(event) {
   var image = inputElement.files[0];
@@ -20,18 +19,14 @@ inputElement.onchange = function(event) {
       inputElement.style.display = "none";
       // run image through canny edge detector
       prepImage(e.target.result, cannyEdgeDetector).then(resultImage =>{
-        var testImage = new Image();
-        document.body.appendChild(testImage);
-        testImage.src = resultImage.toDataURL();
         getEdgeCoordinates(resultImage.toDataURL()).then(height =>{
           console.log(height);
+          setup();
         })
       })
     }
     reader.readAsDataURL(image);
 }
-*/
-setup();
 
 function setup(){
   const config = {
