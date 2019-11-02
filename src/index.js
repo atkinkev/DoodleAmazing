@@ -36,7 +36,7 @@ inputElement.onchange = function(event) {
 }
 
 */
-
+console.log('hello');
 setup();
 
 function setup(){
