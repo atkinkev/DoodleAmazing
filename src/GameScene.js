@@ -1,4 +1,5 @@
 import {Scene} from 'phaser';
+import ball from "./assets/imgs/ball.png";
 
 export default class GameScene extends Phaser.Scene {
 
@@ -7,27 +8,22 @@ export default class GameScene extends Phaser.Scene {
     super(config);
   }
 
-  //preload() {}
+  preload() {
+      this.load.image('ball', ball);
+  }
 
   create() {
     console.log('in game create');
 
-    this.add.text(400, 300, 'Started!', {fill: '#0f0'});
+    var marble = this.physics.add.image(100,240, 'ball');
 
-    this.ball = this.physics.add.image(160, 240, 'sprites', 'ball');
-    this.ball.anchor.set(0.5);
-    this.physics.enable(this.ball, Phaser.Physics.ARCADE);
-    this.ball.body.setSize(18, 18);
-    this.ball.body.bounce.set(0.3, 0.3);
+    marble.setCircle(46);
 
-    this.keys = this.game.input.keyboard.createCursorKeys();
+    marble.setCollideWorldBounds(true);
 
-    window.addEventListener("deviceorientation", this.handleOrientation, true);
+    marble.setBounce(1);
 
-    this.hole = this.physics.add.image(160, 90, 'sprites', 'hole');
-    this.physics.enable(this.hole, Phaser.Physics.ARCADE);
-    this.hole.anchor.set(0.5);
-    this.hole.body.setSize(2, 2);
+    marble.setVelocity(150);
 
   }
 
@@ -38,27 +34,13 @@ export default class GameScene extends Phaser.Scene {
   //manageAudio() {}
 
   update () {
-    if(this.keys.left.isDown) {
-      this.ball.body.velocity.x -= this.movementForce;
-    }
-    else if(this.keys.right.isDown) {
-      this.ball.body.velocity.x += this.movementForce;
-    }
-    if(this.keys.up.isDown) {
-      this.ball.body.velocity.y -= this.movementForce;
-    }
-    else if(this.keys.down.isDown) {
-      this.ball.body.velocity.y += this.movementForce;
-    }
+
   }
 
   //wallCollision() {}
 
   handleOrientation(e) {
-    var x = e.gamma;
-    var y = e.beta;
-    //Ball._player.body.velocity.x += x;
-    //Ball._player.body.velocity.y += y;
+
   }
 
   //finishLevel() {}

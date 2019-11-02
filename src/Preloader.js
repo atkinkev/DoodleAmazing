@@ -1,5 +1,7 @@
 import {Scene} from 'phaser';
 
+import ball from "./assets/imgs/ball.png";
+
 export default class Preloader extends Phaser.Scene{
 
     constructor (config) {
@@ -56,7 +58,7 @@ export default class Preloader extends Phaser.Scene{
       this.setPreloadSprite(this.preloadBar);
 
       //load image assets
-      this.load.image('ball', 'assets/imgs/ball.png');
+      this.load.image('ball', ball);
       this.load.image('hole', 'assets/imgs/hole.png');
       this.load.image('element-v', 'assets/imgs/element-v.png');
       this.load.image('element-h', 'assets/imgs/element-h.png');
@@ -86,18 +88,6 @@ export default class Preloader extends Phaser.Scene{
       //dispose loader bar images
       //this.loadingBar.destroy();
       this.preloadSprite = null;
-
-      //Added from index.js
-      const logo = this.add.image(400, 150, "logo");
-
-      this.tweens.add({
-        targets: logo,
-        y: 450,
-        duration: 2000,
-        ease: "Power2",
-        yoyo: true,
-        loop: -1
-      });
 
       //start menu
       this.scene.start('MainMenu');

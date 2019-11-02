@@ -36,7 +36,7 @@ inputElement.onchange = function(event) {
 }
 
 */
-console.log('hello');
+//console.log('hello');
 setup();
 
 function setup(){
@@ -51,6 +51,7 @@ function setup(){
     physics: {
       default: 'arcade',
       arcade: {
+        debug: false,
         gravity:0
       }
     },
@@ -66,8 +67,8 @@ function setup(){
 
   //method of adding scenes from Unbaffling
   
-  game.scene.add('Preloader', Preloader);
-  game.scene.add('MainMenu', MainMenu);
+  //game.scene.add('Preloader', Preloader);
+  //game.scene.add('MainMenu', MainMenu);
   game.scene.add('GameScene', GameScene);
 
   function preload() {
@@ -75,7 +76,7 @@ function setup(){
   }
 
   function create() {
-    console.log('in create');   
+    //console.log('in create');   
 
     const logo = this.add.image(400, 150, "logo");
 
@@ -88,7 +89,7 @@ function setup(){
       loop: -1
     });
 
-    this.scene.start('Preloader');
+    this.scene.start('GameScene');
     
   }
 
