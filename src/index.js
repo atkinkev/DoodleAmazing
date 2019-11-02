@@ -1,5 +1,10 @@
-import Phaser from "phaser";
+import Phaser from "./phaser.min.js";
+import Preloader from './Preloader.js';
+import MainMenu from './MainMenu.js';
+import GameScene from './GameScene.js';
+
 import logoImg from "./assets/logo.png";
+
 import {prepImage} from './doodleReader';
 import {getEdgeCoordinates} from './doodleReader';
 import {addImageProcess} from './doodleReader';
@@ -10,6 +15,8 @@ require("babel-polyfill");
 ** Behavior: Waits for user to input image using input element on landing page
 ** Returns: Black and White canny edge detected image
 */
+
+/*
 var inputElement = document.getElementById("pic");
 inputElement.onchange = function(event) {
   var image = inputElement.files[0];
@@ -28,20 +35,36 @@ inputElement.onchange = function(event) {
     reader.readAsDataURL(image);
 }
 
-/*
+*/
+
+setup();
+
 function setup(){
   const config = {
     type: Phaser.AUTO,
     parent: "doodle-amazing",
     width: 800,
     height: 600,
-    scene: {
-      preload: preload,
-      create: create
-    }
+    backgroundColor: '#006060',
+    physics: {
+      default: 'arcade',
+      arcade: {
+        gravity:0
+      }
+    },
+    scene: [ Preloader, MainMenu, GameScene ]
   };
 
-  const game = new Phaser.Game(config);
+  //const game = new Phaser.Game(config);
+
+  var game = new Phaser.Game(config);
+
+  //method of adding scenes from Unbaffling
+  /* 
+  game.scene.add('preloader', Preloader);
+  game.scene.add('MainMenu', MainMenu);
+  game.scene.add('GameScene', GameScene);
+  */
 
   function preload() {
     this.load.image("logo", logoImg);
@@ -58,7 +81,10 @@ function setup(){
       yoyo: true,
       loop: -1
     });
+
+    this.scene.start('Preloader');
   }
+
   
 }
-*/
+

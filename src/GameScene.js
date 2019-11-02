@@ -1,16 +1,17 @@
 
-var Game = new Phaser.Class ({
-  Extends: Phaser.Scene,
+class GameScene extends Phaser.Scene {
 
-  initalize:
-  function Game(){
-    Phaser.Scene.call(this, { key: 'game'});
-  },
+  constructor (config){
+    //Phaser.Scene.call(this, { key: 'GameScene'});
+    super(config);
+  }
 
-  preload: function () {},
+  //preload() {}
 
-  create: function() {
+  create() {
     console.log('in game create');
+
+    this.add.text(400, 300, 'Started!', {fill: '#0f0'});
 
     this.ball = this.physics.add.image(160, 240, 'sprites', 'ball');
     this.ball.anchor.set(0.5);
@@ -27,13 +28,15 @@ var Game = new Phaser.Class ({
     this.hole.anchor.set(0.5);
     this.hole.body.setSize(2, 2);
 
-  },
-  initLevels: function() {},
-  showLevel: function(level) {},
-  updateCounter: function() {},
-  managePause: function() {},
-  manageAudio: function() {},
-  update: function() {
+  }
+
+  //initLevels() {}
+  //showLevel(level) {}
+  //updateCounter() {}
+  //managePause() {}
+  //manageAudio() {}
+
+  update () {
     if(this.keys.left.isDown) {
       this.ball.body.velocity.x -= this.movementForce;
     }
@@ -46,13 +49,16 @@ var Game = new Phaser.Class ({
     else if(this.keys.down.isDown) {
       this.ball.body.velocity.y += this.movementForce;
     }
-  },
-  wallCollision: function() {},
-  handleOrientation: function(e) {
+  }
+
+  //wallCollision() {}
+
+  handleOrientation(e) {
     var x = e.gamma;
     var y = e.beta;
     //Ball._player.body.velocity.x += x;
     //Ball._player.body.velocity.y += y;
-  },
-  finishLevel: function() {}
-});
+  }
+
+  //finishLevel() {}
+}

@@ -1,23 +1,27 @@
-var MainMenu = new Phaser.Class({
+class MainMenu extends Phaser.Scene {
 
-  Extends: Phaser.Scene,
-  initialize:
-  function MainMenu () {
-    Phaser.Scene.call(this, {key: 'mainmenu'});
-  },
 
-  preload: function () {},
+  constructor (config) {
+    //Phaser.Scene.call(this, {key: 'MainMenu'});
+    super(config);
+  }
 
-  create: function (){
+  preload () {}
+
+  create (){
     //Add title image
     //Add buttons and use sprite sheet
       //temporary text-based start button
-      const startButton = this.add.text(100, 100, 'Start!', {fill: '#0f0'})
-      .setInteractive()
-      .on('pointerdown', () => this.doStart());
+      this.add.text(100, 100, 'Start!', {fill: '#0f0'});
+      this.input.once('pointerdown', function (event){
+
+        console.log('main menu to game phase');
+        this.scene.start('GameScene');
+
+      }, this);
 
       console.log('create is ready');
-  },
+  }
 
   // Tutorial function here
   /*
@@ -27,10 +31,12 @@ var MainMenu = new Phaser.Class({
   },
   */
 
+  //this function isn't working
+  /* 
   doStart: function () {
     console.log('menuscene was called!');
       this.scene.start('game');
       console.log('mainmenu: should not get here');
-  }
+  }*/
 
-});
+}

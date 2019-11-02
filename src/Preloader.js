@@ -1,22 +1,18 @@
-var Preloader = new Phaser.Class({
+class Preloader extends Phaser.Scene{
 
-    Extends: Phaser.Scene,
-
-    initialize:
-    function Preloader ()
-    {
+    constructor () {
       //pack:{files[]} eliminates the need for boot scene to preload loadingbar images
       Phaser.Scene.call(this, {
-        key: 'preloader',
+        key: 'Preloader',
         pack: {
           files: [
             {type: 'image', key: 'loadingBar', url: 'assets/loadingbar.png'}
           ]
         }
       });
-    },
+    }
 
-    setPreloadSprite: function (sprite) {
+    setPreloadSprite (sprite) {
       this.preloadSprite = { sprite: sprite, width: sprite.width, height: sprite.height };
 
       sprite.visible = true;
@@ -24,9 +20,9 @@ var Preloader = new Phaser.Class({
       //set callback for loading progress updates
       this.load.on('progress', this.onProgress, this);
       this.load.on('fileprogress', this.onFileProgress, this);
-    },
+    }
 
-    onProgress: function (value) {
+    onProgress (value) {
 
       if (this.preloadSprite){
         //calculate width based on value
@@ -41,13 +37,15 @@ var Preloader = new Phaser.Class({
         this.preloadSprite.sprite.frame.updateUVs();
       }
 
-    },
+    }
 
-    onFileProgress: function (file){
+    onFileProgress (file){
       console.log('onFileProgress: file.key=' + file.key);
-    },
+    }
 
-    preload: function() {
+    preload() {
+
+
       //setup loading bar (preloaded in pack: call in constructor)
       this.preloadBar = this.add.sprite(160, 240, 'preloaderBar');
       this.setPreloadSprite(this.preloadBar);
@@ -75,9 +73,9 @@ var Preloader = new Phaser.Class({
       };
       */
 
-    },
+    }
 
-    create: function() {
+    create() {
       console.log('Preloader scene is ready, now start the actual game and never return to this scene');
 
       //dispose loader bar images
@@ -97,9 +95,9 @@ var Preloader = new Phaser.Class({
       });
 
       //start menu
-      this.scene.start('mainmenu');
-      console.log('preloader: should not get here');
+      this.scene.start('MainMenu');
+      //console.log('preloader: should not get here');
     }
 
 
-})
+}
