@@ -28,6 +28,7 @@ inputElement.onchange = function(event) {
     reader.readAsDataURL(image);
 }
 
+/*
 function setup(){
   const config = {
     type: Phaser.AUTO,
@@ -58,5 +59,6 @@ function setup(){
       loop: -1
     });
   }
+  
 }
-
+*/
