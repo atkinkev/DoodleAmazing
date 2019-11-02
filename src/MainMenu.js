@@ -1,4 +1,6 @@
-class MainMenu extends Phaser.Scene {
+import {Scene} from 'phaser';
+
+export default class MainMenu extends Phaser.Scene {
 
 
   constructor (config) {

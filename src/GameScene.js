@@ -1,5 +1,6 @@
+import {Scene} from 'phaser';
 
-class GameScene extends Phaser.Scene {
+export default class GameScene extends Phaser.Scene {
 
   constructor (config){
     //Phaser.Scene.call(this, { key: 'GameScene'});
