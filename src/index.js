@@ -40,6 +40,8 @@ inputElement.onchange = function(event) {
 setup();
 
 function setup(){
+
+  console.log('in setup');
   const config = {
     type: Phaser.AUTO,
     parent: "doodle-amazing",
@@ -52,7 +54,10 @@ function setup(){
         gravity:0
       }
     },
-    scene: [ Preloader, MainMenu, GameScene ]
+    scene: {
+      preload: preload,
+      create: create
+    }
   };
 
   //const game = new Phaser.Game(config);
@@ -60,17 +65,18 @@ function setup(){
   var game = new Phaser.Game(config);
 
   //method of adding scenes from Unbaffling
-  /* 
-  game.scene.add('preloader', Preloader);
+  
+  game.scene.add('Preloader', Preloader);
   game.scene.add('MainMenu', MainMenu);
   game.scene.add('GameScene', GameScene);
-  */
 
   function preload() {
     this.load.image("logo", logoImg);
   }
 
   function create() {
+    console.log('in create');   
+
     const logo = this.add.image(400, 150, "logo");
 
     this.tweens.add({
@@ -83,6 +89,7 @@ function setup(){
     });
 
     this.scene.start('Preloader');
+    
   }
 
   

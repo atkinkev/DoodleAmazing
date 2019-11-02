@@ -1,7 +1,11 @@
-class Preloader extends Phaser.Scene{
+import {Scene} from 'phaser';
 
-    constructor () {
+export default class Preloader extends Phaser.Scene{
+
+    constructor (config) {
+      super(config);
       //pack:{files[]} eliminates the need for boot scene to preload loadingbar images
+      /*
       Phaser.Scene.call(this, {
         key: 'Preloader',
         pack: {
@@ -10,6 +14,7 @@ class Preloader extends Phaser.Scene{
           ]
         }
       });
+      */
     }
 
     setPreloadSprite (sprite) {
