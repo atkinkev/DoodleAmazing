@@ -1,7 +1,7 @@
-import Phaser from "./phaser.min.js";
-import Preloader from './Preloader.js';
-import MainMenu from './MainMenu.js';
-import GameScene from './GameScene.js';
+import Phaser from "phaser";
+import Preloader from './Preloader';
+import MainMenu from './MainMenu';
+import GameScene from './GameScene';
 
 import logoImg from "./assets/logo.png";
 
