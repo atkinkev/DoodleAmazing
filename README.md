@@ -1,6 +1,12 @@
 # Doodle Amazing
 
 ## Changelog
+KEA 11/3/2019
+* Hosted site for midpoint check
+* Cleaned up files
+* Created express server for bundled code
+* Worked on image coordinates
+
 KEA 10/31/2019
 * Experimented with creating a landing screen  
 * Ported to Mobile!
@@ -26,19 +32,19 @@ npm install
 ## Running in Test
 run 'npm start'  
 Game will be at: http://localhost/8080   
--- Open new terminal  
-run 'cordova run <device>'  
-Game will be run on device specified  
 
-npm export
-Bundle will be created in www Cordova folder
-cordova 
+## Explorting for Phone
+* Test *
+cordova run android (setup target emulator or plugin android with USB debugging turned on)
 
-## Deploying
+* Production *
+See : https://cordova.apache.org/docs/en/2.9.0/guide/getting-started/android/ 
+We will need a Mac to export for iPhone 
+
+## Deploying for Web
 npm run build  
 Webpack will have created dist/bundle.min.js 
-We may not need this depending on how exporting works
+Move dist folder to deploy folder  
+Make sure paths make sense  
+Deploy via gcloud (https://doodleamazing.appspot.com/)
 
-## Exporting to Phone
-We will be using Apache Cordova to export the project to mobile.
-https://cordova.apache.org/
