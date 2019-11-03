@@ -1,7 +1,10 @@
 import {Scene} from 'phaser';
 import ball from "./assets/imgs/ball.png";
+import dpad from "./assets/imgs/pad.png";
 
 export default class GameScene extends Phaser.Scene {
+  
+
 
   constructor (config){
     //Phaser.Scene.call(this, { key: 'GameScene'});
@@ -10,20 +13,18 @@ export default class GameScene extends Phaser.Scene {
 
   preload() {
       this.load.image('ball', ball);
+      this.load.image('pad', ball);
   }
 
   create() {
     console.log('in game create');
 
-    var marble = this.physics.add.image(100,240, 'ball');
-
-    marble.setCircle(46);
-
-    marble.setCollideWorldBounds(true);
-
-    marble.setBounce(1);
-
-    marble.setVelocity(150);
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.marble = this.physics.add.image(100,240, 'ball');
+    this.marble.setCircle(46);
+    this.marble.setCollideWorldBounds(true);
+    this.marble.setBounce(1);
+    //marble.setVelocity(150);
 
   }
 
@@ -33,8 +34,26 @@ export default class GameScene extends Phaser.Scene {
   //managePause() {}
   //manageAudio() {}
 
-  update () {
+  update() {
 
+  //marble motion with keyboard input
+  //will update with accelerometer api
+    this.marble.setVelocity(0);
+    if(this.cursors.left.isDown){
+      this.marble.setVelocityX(-300);
+    }
+
+    else if(this.cursors.right.isDown){
+      this.marble.setVelocityX(300);
+    }
+
+    if(this.cursors.up.isDown){
+      this.marble.setVelocityY(-300);
+    }
+
+    else if(this.cursors.down.isDown){
+      this.marble.setVelocityY(300);
+    }
   }
 
   //wallCollision() {}

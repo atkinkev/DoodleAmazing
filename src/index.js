@@ -57,7 +57,12 @@ function setup(){
     },
     scene: {
       preload: preload,
-      create: create
+      create: create,
+      update: update,
+      extend: {
+        cursors : null,
+        marble : null
+      }
     }
   };
 
@@ -92,6 +97,8 @@ function setup(){
     this.scene.start('GameScene');
     
   }
+
+  function update() {}
 
   
 }
