@@ -22,6 +22,7 @@ export default class GameScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.marble = this.physics.add.image(100,240, 'ball');
     this.marble.setCircle(46);
+    this.marble.setFriction(0.005);
     this.marble.setCollideWorldBounds(true);
     this.marble.setBounce(1);
     //marble.setVelocity(150);
@@ -39,20 +40,26 @@ export default class GameScene extends Phaser.Scene {
   //marble motion with keyboard input
   //will update with accelerometer api
     this.marble.setVelocity(0);
+    this.marble.setAngularVelocity(0);
+
     if(this.cursors.left.isDown){
       this.marble.setVelocityX(-300);
+      this.marble.setAngularVelocity(-300);
     }
 
     else if(this.cursors.right.isDown){
       this.marble.setVelocityX(300);
+      this.marble.setAngularVelocity(300);
     }
 
     if(this.cursors.up.isDown){
       this.marble.setVelocityY(-300);
+      this.marble.setAngularVelocity(-300);
     }
 
     else if(this.cursors.down.isDown){
       this.marble.setVelocityY(300);
+      this.marble.setAngularVelocity(300);
     }
   }
 

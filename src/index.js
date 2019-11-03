@@ -59,6 +59,7 @@ function setup(){
       preload: preload,
       create: create,
       update: update,
+      //global variables
       extend: {
         cursors : null,
         marble : null
