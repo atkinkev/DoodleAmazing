@@ -12,13 +12,10 @@ require("babel-polyfill");
 
 // User image input
 doodleReader.waitForInput(cannyEdgeDetector).then(coordinates => {
-  console.log(coordinates);
   setup(coordinates);
 });
 
-function setup(){
-
-  console.log('in setup');
+function setup(coordinates){
   const config = {
     type: Phaser.AUTO,
     parent: "doodle-amazing",
@@ -39,7 +36,8 @@ function setup(){
       //global variables
       extend: {
         cursors: null,
-        marble: null
+        marble: null,
+        wall: null
       }
     }
   };
@@ -60,7 +58,7 @@ function setup(){
 
   function create() {
 
-    this.scene.start('GameScene');
+    this.scene.start('GameScene', {coordinateArray: coordinates});
     
   }
 

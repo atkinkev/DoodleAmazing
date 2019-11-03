@@ -2,6 +2,7 @@ import {Scene} from 'phaser';
 import ball from "./assets/imgs/ball.png";
 import wall from "./assets/imgs/black_pixel.png"
 import dpad from "./assets/imgs/pad.png";
+var _coordinates;
 
 export default class GameScene extends Phaser.Scene {
 
@@ -9,6 +10,7 @@ export default class GameScene extends Phaser.Scene {
   constructor (config){
     //Phaser.Scene.call(this, { key: 'GameScene'});
     super(config);
+
   }
 
   preload() {
@@ -18,10 +20,13 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create(coordinates) {
-    console.log('in game create');
+    _coordinates = coordinates["coordinateArray"];
 
-    console.log(coordinates);
     this.cursors = this.input.keyboard.createCursorKeys();
+    for(var coordinate of _coordinates){
+      this.wall = this.physics.add.image(coordinate['X'], coordinate['Y'], 'wall');
+    }
+
     this.marble = this.physics.add.image(100,240, 'ball');
     this.marble.setCircle(46);
     this.marble.setFriction(0.005);
