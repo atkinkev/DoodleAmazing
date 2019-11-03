@@ -1,5 +1,5 @@
 import {Scene} from 'phaser';
-
+import wall from "./assets/imgs/black_pixel.png"
 import ball from "./assets/imgs/ball.png";
 
 export default class Preloader extends Phaser.Scene{
@@ -59,6 +59,7 @@ export default class Preloader extends Phaser.Scene{
 
       //load image assets
       this.load.image('ball', ball);
+      this.load.image('wall', black_pixel);
       this.load.image('hole', 'assets/imgs/hole.png');
       this.load.image('element-v', 'assets/imgs/element-v.png');
       this.load.image('element-h', 'assets/imgs/element-h.png');

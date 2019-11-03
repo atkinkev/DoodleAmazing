@@ -1,9 +1,9 @@
 import {Scene} from 'phaser';
 import ball from "./assets/imgs/ball.png";
+import wall from "./assets/imgs/black_pixel.png"
 import dpad from "./assets/imgs/pad.png";
 
 export default class GameScene extends Phaser.Scene {
-  
 
 
   constructor (config){
@@ -14,11 +14,13 @@ export default class GameScene extends Phaser.Scene {
   preload() {
       this.load.image('ball', ball);
       this.load.image('pad', ball);
+      this.load.image('wall', wall);
   }
 
-  create() {
+  create(coordinates) {
     console.log('in game create');
 
+    console.log(coordinates);
     this.cursors = this.input.keyboard.createCursorKeys();
     this.marble = this.physics.add.image(100,240, 'ball');
     this.marble.setCircle(46);
