@@ -1,7 +1,7 @@
 async function getEdgeCoordinates(imagesrc){
 	var coordinateArray = [];
 	let image = await promiseLoad(imagesrc);
-	document.body.appendChild(image);
+	//document.body.appendChild(image);
 	var canvas=document.getElementById("canvas");
 	canvas.style.display = "none";
 	canvas.width = image.width;
