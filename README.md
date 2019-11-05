@@ -1,11 +1,18 @@
 # Doodle Amazing
 
+## https://doodleamazing.appspot.com
+
 ## Changelog
+KEA 11/4/2019
+* Updated hosted site for midpoint check  
+* Created production APK for midpoint check
+
 KEA 11/3/2019
 * Hosted site for midpoint check
 * Cleaned up files
 * Created express server for bundled code
 * Worked on image coordinates
+* Added coordinates to game!
 
 KEA 10/31/2019
 * Experimented with creating a landing screen  
