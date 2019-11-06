@@ -36,6 +36,7 @@
     "canny-edge-detector": "^1.0.0",
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
+    "gyronorm": "^2.0.6",
     "image-js": "^0.21.7",
     "jsfeat": "0.0.8",
     "phaser": "^3.16.2"
