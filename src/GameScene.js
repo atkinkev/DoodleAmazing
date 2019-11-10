@@ -24,10 +24,10 @@ export default class GameScene extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
     for(var coordinate of _coordinates){
-      this.wall = this.physics.add.image(coordinate['X'], coordinate['Y'], 'wall');
+      this.wall = this.physics.add.image(coordinate['X'] + 50, coordinate['Y'] + 25, 'wall');
     }
 
-    this.marble = this.physics.add.image(100,240, 'ball');
+    this.marble = this.physics.add.image(25,270, 'ball');
     this.marble.setCircle(46);
     this.marble.setFriction(0.005);
     this.marble.setCollideWorldBounds(true);
