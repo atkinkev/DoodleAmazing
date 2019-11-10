@@ -125,15 +125,22 @@ async function findBall(imagesrc){
 	  			// More simply: currentIndex + rows away + columns away
 	  			elipY++;
 	  			var pUnderReview = pIndex + (vertOffset * cw * 4) + (horizOffset * 4);
-	  			curScore += ellipse[elipY][elipX] * data[pUnderReview];
-	  			if(once && vertOffset == -7 && horizOffset == -6){
-	  				console.log(pUnderReview);
-	  				console.log(data[pUnderReview]);
+	  			var score = ellipse[elipY][elipX] * data[pUnderReview];
+	  			if (score > 0){
+	  				curScore++;
+	  			}
+	  			/*
+	  			if(curScore > 255 && once){
+	  				console.log(x);
+	  				console.log(y);
+	  				console.log(curScore);
 	  				once = !once;
 	  			}
+	  			*/
 	  		}
 	  	}
 		if (curScore > bestScore){
+			console.log(curScore);
 			bestScore = curScore;
 			bestCoord = [x, y];
 		}
@@ -155,10 +162,10 @@ async function prepImage(img_src, canny){
 	var resizeOptions = {"width": 650}
 	// resize to managable size and greyscale(also converts to a png)
 	image = image.resize(resizeOptions);
-	shapeImage = image.resize({"width": 325}).grey().gaussianFilter();
-	let ballcoord = await findBall(shapeImage.toDataURL());
+	//shapeImage = image.resize({"width": 325}).grey().gaussianFilter();
 	let grey = image.grey();
 	const edge = canny(grey);
+	let ballcoord = await findBall(edge.resize({"width":325}).toDataURL());
 	return edge;
 }
 
