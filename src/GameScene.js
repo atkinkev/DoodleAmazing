@@ -1,6 +1,7 @@
 import {Scene} from 'phaser';
 import ball from "./assets/imgs/ball.png";
 import dpad from "./assets/imgs/pad.png";
+import GyroNorm from 'gyronorm';
 
 export default class GameScene extends Phaser.Scene {
   
@@ -14,12 +15,15 @@ export default class GameScene extends Phaser.Scene {
   preload() {
       this.load.image('ball', ball);
       this.load.image('pad', ball);
+      var gn = new GyroNorm();
+      this.gyro = gn;
   }
 
   create() {
     console.log('in game create');
 
     this.cursors = this.input.keyboard.createCursorKeys();
+    
     this.marble = this.physics.add.image(100,240, 'ball');
     this.marble.setCircle(46);
     this.marble.setFriction(0.005);
@@ -37,11 +41,24 @@ export default class GameScene extends Phaser.Scene {
 
   update() {
 
-  //marble motion with keyboard input
-  //will update with accelerometer api
+
     this.marble.setVelocity(0);
     this.marble.setAngularVelocity(0);
 
+    this.gyro.init().then(function(){
+      this.gyro.start(function(data){
+            console.log("Alpha = " + data.do.alpha);
+            console.log("Beta = " + data.do.beta);
+            console.log("Gamma = " + data.do.gamma);
+            console.log("Absolute = " + data.do.absolute);
+      });
+    }).catch(function(e){
+      console.log("DeviceOrientation not supported by device.");
+    });
+    
+
+  //marble motion with keyboard input
+  //will update with accelerometer api
     if(this.cursors.left.isDown){
       this.marble.setVelocityX(-300);
       this.marble.setAngularVelocity(-300);
@@ -61,6 +78,7 @@ export default class GameScene extends Phaser.Scene {
       this.marble.setVelocityY(300);
       this.marble.setAngularVelocity(300);
     }
+
   }
 
   //wallCollision() {}

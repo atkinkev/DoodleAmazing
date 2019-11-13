@@ -2,14 +2,14 @@ import Phaser from "phaser";
 import Preloader from './Preloader';
 import MainMenu from './MainMenu';
 import GameScene from './GameScene';
-
 import logoImg from "./assets/logo.png";
-
 import {prepImage} from './doodleReader';
 import {getEdgeCoordinates} from './doodleReader';
 import {addImageProcess} from './doodleReader';
 import cannyEdgeDetector from 'canny-edge-detector';
 require("babel-polyfill");
+import GyroNorm from 'gyronorm';
+import FULLTILT from './fulltilt.js';
 
 /* User Entry Point
 ** Behavior: Waits for user to input image using input element on landing page
