@@ -12,6 +12,8 @@ require("babel-polyfill");
 
 // User image input
 doodleReader.waitForInput(cannyEdgeDetector).then(coordinates => {
+  console.log(coordinates["ball"]);
+  console.log(coordinates["hole"]);
   setup(coordinates);
 });
 
@@ -58,7 +60,7 @@ function setup(coordinates){
 
   function create() {
 
-    this.scene.start('GameScene', {coordinateArray: coordinates});
+    this.scene.start('GameScene', coordinates);
     
   }
 

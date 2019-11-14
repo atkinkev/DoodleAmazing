@@ -3,11 +3,28 @@
 <head>
     <meta charset="utf-8" />
     <title>Doodle aMazing</title>    
-
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <head>
   <body>
-    <style>{margin: 0; background: #333; } </style>
-    <input type="file" id="pic" accept="image/*">
+	<div class="jumbotron" id="greeting" style="background-color: #00a8a7 !important;">
+	  <h1 class="display-4" style="color: black">Doodle Amazing</h1>
+	  <p class="lead" style="color: black">Upload a doodle to begin!</p>
+	  <hr class="my-4">
+	  <p class="lead">
+	  	<input type="file" id="pic" accept="image/*" style="color: black">
+	    <a class="btn btn-light btn-lg" href="#" role="button" style="color: black">Rules</a>
+	  </p>
+	</div>
     <canvas id="canvas" width="1" height="1"></canvas>
+    </div>
+    <div class="jumbotron" id="loader" style="display: none;">
+    	<div class="d-flex justify-content-center">
+    		<div class="spinner-border text-info" role="status" style="width: 10rem; height: 10rem;"></div>
+		</div>
+		<hr class="my-4">
+		<div class="d-flex justify-content-center">
+			<h1 id="loadtext" class="display-4" style="color: black">Doodle Amazing</h1>
+		</div>
+	</div>
   </body>
   </html>
