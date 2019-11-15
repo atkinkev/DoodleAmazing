@@ -1,30 +1,47 @@
 import {Scene} from 'phaser';
 import ball from "./assets/imgs/ball.png";
+import wall from "./assets/imgs/black_pixel.png"
 import dpad from "./assets/imgs/pad.png";
+<<<<<<< HEAD
 import GyroNorm from 'gyronorm';
+=======
+var _coordinates;
+>>>>>>> 3b7794a28c9100cb3e10c4125b08810d221d7371
 
 export default class GameScene extends Phaser.Scene {
-  
 
 
   constructor (config){
     //Phaser.Scene.call(this, { key: 'GameScene'});
     super(config);
+
   }
 
   preload() {
       this.load.image('ball', ball);
       this.load.image('pad', ball);
+<<<<<<< HEAD
       var gn = new GyroNorm();
       this.gyro = gn;
+=======
+      this.load.image('wall', wall);
+>>>>>>> 3b7794a28c9100cb3e10c4125b08810d221d7371
   }
 
-  create() {
-    console.log('in game create');
+  create(coordinates) {
+    _coordinates = coordinates["walls"];
 
     this.cursors = this.input.keyboard.createCursorKeys();
+<<<<<<< HEAD
     
     this.marble = this.physics.add.image(100,240, 'ball');
+=======
+    for(var coordinate of _coordinates){
+      this.wall = this.physics.add.image(coordinate['X'] + 50, coordinate['Y'] + 25, 'wall');
+    }
+
+    this.marble = this.physics.add.image(coordinates["ball"][0]  + 50,coordinates["ball"][1] + 25, 'ball');
+>>>>>>> 3b7794a28c9100cb3e10c4125b08810d221d7371
     this.marble.setCircle(46);
     this.marble.setFriction(0.005);
     this.marble.setCollideWorldBounds(true);

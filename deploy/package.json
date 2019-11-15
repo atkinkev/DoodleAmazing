@@ -1,0 +1,26 @@
+{
+  "name": "doodle-amazing-server",
+  "version": "1.0.0",
+  "description": "Basic express server to serve DoodleAmazing",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atkinkev/DoodleAmazing.git"
+  },
+  "keywords": [
+    "Amazing"
+  ],
+  "author": "Kevin Atkins and Carly Tsuda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atkinkev/DoodleAmazing/issues"
+  },
+  "homepage": "https://github.com/atkinkev/DoodleAmazing#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

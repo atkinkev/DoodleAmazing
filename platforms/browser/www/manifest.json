@@ -1,11 +1,11 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "HelloCordova",
-  "short_name": "HelloCordova",
-  "version": "io.cordova.hellocordova",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "author": "Apache Cordova Team",
+  "name": "Doodle aMazeing",
+  "short_name": "Doodle aMazeing",
+  "version": "io.cordova.doodleamazing",
+  "description": "Apache Cordova config to host DoodleAmazing.",
+  "author": "Kevin Atkins and Carly Tsuda",
   "icons": [],
   "start_url": "index.html"
 }

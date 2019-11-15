@@ -1,7 +1,7 @@
 {
   "name": "doodle_amazing",
   "version": "1.1.0",
-  "description": "A Phaser 3 Project Template",
+  "description": "Cross platform HTML5 game utilizing maze components from image.",
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --config webpack/prod.js ",
@@ -39,7 +39,6 @@
     "gradle": "^1.0.9",
     "gyronorm": "^2.0.6",
     "image-js": "^0.21.7",
-    "jsfeat": "0.0.8",
     "phaser": "^3.16.2"
   },
   "cordova": {
