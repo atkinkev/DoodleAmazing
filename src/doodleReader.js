@@ -255,5 +255,3 @@ async function prepImage(img_src, canny){
 }
 
 module.exports.waitForInput = waitForInput;
-
-// True black 255, 255, 255 ,255
