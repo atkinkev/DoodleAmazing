@@ -19,10 +19,10 @@ doodleReader.waitForInput(cannyEdgeDetector).then(coordinates => {
 
 function setup(coordinates){
   const config = {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     parent: "doodle-amazing",
-    width: 800,
-    height: 600,
+    width: window.innerWidth, //* window.devicePixelRatio / 2,
+    height: window.innerHeight, //* window.devicePixelRatio / 2,
     backgroundColor: '#006060',
     physics: {
       default: 'arcade',

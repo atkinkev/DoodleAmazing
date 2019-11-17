@@ -67,7 +67,7 @@ async function waitForInput(cannyEdgeDetector){
 		      	prepImage(e.target.result, cannyEdgeDetector).then(resultImage =>{
 		      		progressText.innerText = "Gathering wall coordinates...";
 			        getEdgeCoordinates(resultImage.toDataURL()).then(wallCoordinates =>{
-			        	progressText.innerText = "Finding ball...";
+			        	progressText.innerText = 'height: ' + window.innerHeight + ' width: ' + window.innerWidth;
 			        	findBall(resultImage.resize({"width":325}).toDataURL()).then(ballCoordinates =>{
 			        		progressText.innerText = "Finding hole...";
 			        		findHole(resultImage.resize({"width":325}).toDataURL()).then(holeCoordinates =>{
@@ -75,7 +75,8 @@ async function waitForInput(cannyEdgeDetector){
 			        			{
 			        			walls: wallCoordinates,
 			        			ball: ballCoordinates,
-			        			hole: holeCoordinates
+			        			hole: holeCoordinates,
+			        			max_height: resultImage.height
 			        			}
 			        			loader.style.display = "none";
 			        			const imageCanvas = document.getElementById("canvas");
@@ -134,7 +135,13 @@ async function findHole(imagesrc){
 	var once = true;
 	// start at the offset of the kernel and go until the offset of the kernel
 	for (var x = halfWidth; x < cw - halfWidth; x++){
+		if (x % 2 == 0){
+			continue;
+		}
 	  for(var y = halfHeight; y < ch - halfHeight; y++){
+	  	if (y % 2 == 0){
+	  		continue;
+	  	}
 	  	curScore = 0;
 	  	var elipX = -1;
 	  	var pIndex = ((x + y * cw) * 4);
@@ -208,7 +215,13 @@ async function findBall(imagesrc){
 	var once = true;
 	// start at the offset of the kernel and go until the offset of the kernel
 	for (var x = halfWidth; x < cw - halfWidth; x++){
+		 if (x % 2 == 0){
+	  		continue;
+	  	}	
 	  for(var y = halfHeight; y < ch - halfHeight; y++){
+	  	if (y % 2 == 0){
+	  		continue;
+	  	}
 	  	curScore = 0;
 	  	var elipX = -1;
 	  	var pIndex = ((x + y * cw) * 4);
