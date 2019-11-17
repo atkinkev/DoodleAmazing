@@ -2,13 +2,13 @@ import Phaser from "phaser";
 import Preloader from './Preloader';
 import MainMenu from './MainMenu';
 import GameScene from './GameScene';
-
 import logoImg from "./assets/logo.png";
-
 import doodleReader from './doodleReader';
 import {addImageProcess} from './doodleReader';
 import cannyEdgeDetector from 'canny-edge-detector';
 require("babel-polyfill");
+import GyroNorm from 'gyronorm';
+import FULLTILT from './fulltilt.js';
 
 // User image input
 doodleReader.waitForInput(cannyEdgeDetector).then(coordinates => {
