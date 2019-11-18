@@ -7,5 +7,6 @@
   "description": "Apache Cordova config to host DoodleAmazing.",
   "author": "Kevin Atkins and Carly Tsuda",
   "icons": [],
+  "orientation": "landscape",
   "start_url": "index.html"
 }

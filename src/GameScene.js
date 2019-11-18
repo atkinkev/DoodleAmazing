@@ -25,12 +25,15 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create(coordinates) {
+    var canvasHeight = window.innerHeight;
     _coordinates = coordinates["walls"];
-
+    const sizingRatio = canvasHeight / coordinates["max_height"];
     this.cursors = this.input.keyboard.createCursorKeys();
+
     for(var coordinate of _coordinates){
-      this.wall = this.physics.add.image(coordinate['X'] + 50, coordinate['Y'] + 25, 'wall');
+      this.wall = this.physics.add.image(coordinate['X'] * sizingRatio, coordinate['Y'] * sizingRatio, 'wall');
     }
+<<<<<<< HEAD
 // This line of code drops the marble where the drawing indicates. We'll need this later.
     this.marble = this.physics.add.image(coordinates["ball"][0]  + 50,coordinates["ball"][1] + 25, 'ball');
     
@@ -38,6 +41,10 @@ export default class GameScene extends Phaser.Scene {
 //for testing accelerometer
     //this.marble = this.physics.add.image(100, 500, 'ball');
 
+=======
+
+    this.marble = this.physics.add.image(coordinates["ball"][0] * sizingRatio, coordinates["ball"][1] * sizingRatio, 'ball');
+>>>>>>> 77488360fac707229ae2b1fa85e066f3774c281f
     this.marble.setCircle(46);
     this.marble.setFriction(0.005);
     this.marble.setCollideWorldBounds(true);
