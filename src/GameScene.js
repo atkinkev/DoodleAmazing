@@ -33,18 +33,10 @@ export default class GameScene extends Phaser.Scene {
     for(var coordinate of _coordinates){
       this.wall = this.physics.add.image(coordinate['X'] * sizingRatio, coordinate['Y'] * sizingRatio, 'wall');
     }
-<<<<<<< HEAD
+
 // This line of code drops the marble where the drawing indicates. We'll need this later.
     this.marble = this.physics.add.image(coordinates["ball"][0]  + 50,coordinates["ball"][1] + 25, 'ball');
     
-
-//for testing accelerometer
-    //this.marble = this.physics.add.image(100, 500, 'ball');
-
-=======
-
-    this.marble = this.physics.add.image(coordinates["ball"][0] * sizingRatio, coordinates["ball"][1] * sizingRatio, 'ball');
->>>>>>> 77488360fac707229ae2b1fa85e066f3774c281f
     this.marble.setCircle(46);
     this.marble.setFriction(0.005);
     this.marble.setCollideWorldBounds(true);
@@ -62,8 +54,8 @@ export default class GameScene extends Phaser.Scene {
   update() {
 
   //initialize marble movement (makes sure it stops)
-    this.marble.setVelocity(0);
-    this.marble.setAngularVelocity(0);
+    //this.marble.setVelocity(0);
+    //this.marble.setAngularVelocity(0);
 
   //gyro object loop   
     this.gyro.init().then(function(){
@@ -73,6 +65,9 @@ export default class GameScene extends Phaser.Scene {
             console.log("Beta = " + data.do.beta);
             console.log("Gamma = " + data.do.gamma);
             console.log("Absolute = " + data.do.absolute);
+      this.marble.setAccelerationX(data.dm.x);
+      this.marble.setAccelerationY(data.dm.y);
+
       });
     }).catch(function(e){
       console.log("DeviceOrientation not supported by device.");
