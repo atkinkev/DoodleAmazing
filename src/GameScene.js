@@ -2,9 +2,11 @@ import {Scene} from 'phaser';
 import ball from "./assets/imgs/ball.png";
 import wall from "./assets/imgs/black_pixel.png"
 import dpad from "./assets/imgs/pad.png";
+import hole from "./assets/imgs/hole.png";
 import GyroNorm from 'gyronorm';
 var _coordinates;
 var group;
+var text;
 
 export default class GameScene extends Phaser.Scene {
 
@@ -17,40 +19,38 @@ export default class GameScene extends Phaser.Scene {
 
   preload() {
       this.load.image('ball', ball);
-      this.load.image('pad', ball);
+      this.load.image('pad', dpad);
       this.load.image('wall', wall);
-
+      this.load.image('hole', hole);
       //adding in new gyronorm object
       var gn = new GyroNorm();
       this.gyro = gn;
   }
 
   create(coordinates) {
-    var canvasHeight = window.innerHeight;
+    var canvasHeight = window.innerHeight; 
     _coordinates = coordinates["walls"];
-    const sizingRatio = canvasHeight / coordinates["max_height"];
+    const sizingRatio = canvasHeight / coordinates["max_height"]; //scalable sizing
+
+//text to indicate endgame for time being
+text = this.add.text(10, 10, 'Game running...', {font: '32px Courier', fill: '#000000'});
+
+    //creates browser keypad controls
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    group = this.physics.add.staticGroup(
-    /*{
-      key: 'wall',
-      frameQuantity: _coordinates.length
-    }*/
-    );
-
-
-
+//static group for wall physics
+    group = this.physics.add.staticGroup();
+//add all wall points in correct position to group
     for(var coordinate of _coordinates){
       group.create(coordinate['X'] * sizingRatio, coordinate['Y'] * sizingRatio, 'wall');
     }
-
-
-//Phaser.Actions.PlaceOnRectangle(group.getChildren(), new Phaser.Geom.Rectangle(84, 84, 616, 416));
+//needed to update new coordinates
     group.refresh();
 
-// This line of code drops the marble where the drawing indicates. We'll need this later.
+// Drops the marble where the drawing indicates. 
     this.marble = this.physics.add.image(coordinates["ball"][0]  + 50,coordinates["ball"][1] + 25, 'ball');
-    
+    this.goal = this.physics.add.image(coordinates["hole"][0] + 50, coordinates["hole"][1] + 25, 'hole');
+
     //marble physics
     this.marble.setCircle(46);
     this.marble.setFriction(0.005);
@@ -58,7 +58,13 @@ export default class GameScene extends Phaser.Scene {
     this.marble.setBounce(1);
     //marble.setVelocity(150);
 
+//ball/walls collider
     this.physics.add.collider(this.marble, group);
+//ball/hole overlap triggers endgame
+    this.physics.add.overlap(this.marble, this.goal, function() {
+    text.setText('Game Over');
+    return;
+  });
   }
 
   //initLevels() {}
