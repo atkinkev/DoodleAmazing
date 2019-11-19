@@ -4,6 +4,7 @@ import wall from "./assets/imgs/black_pixel.png"
 import dpad from "./assets/imgs/pad.png";
 import GyroNorm from 'gyronorm';
 var _coordinates;
+var group;
 
 export default class GameScene extends Phaser.Scene {
 
@@ -30,19 +31,34 @@ export default class GameScene extends Phaser.Scene {
     const sizingRatio = canvasHeight / coordinates["max_height"];
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    group = this.physics.add.staticGroup(
+    /*{
+      key: 'wall',
+      frameQuantity: _coordinates.length
+    }*/
+    );
+
+
+
     for(var coordinate of _coordinates){
-      this.wall = this.physics.add.image(coordinate['X'] * sizingRatio, coordinate['Y'] * sizingRatio, 'wall');
+      group.create(coordinate['X'] * sizingRatio, coordinate['Y'] * sizingRatio, 'wall');
     }
+
+
+//Phaser.Actions.PlaceOnRectangle(group.getChildren(), new Phaser.Geom.Rectangle(84, 84, 616, 416));
+    group.refresh();
 
 // This line of code drops the marble where the drawing indicates. We'll need this later.
     this.marble = this.physics.add.image(coordinates["ball"][0]  + 50,coordinates["ball"][1] + 25, 'ball');
     
+    //marble physics
     this.marble.setCircle(46);
     this.marble.setFriction(0.005);
     this.marble.setCollideWorldBounds(true);
     this.marble.setBounce(1);
     //marble.setVelocity(150);
 
+    this.physics.add.collider(this.marble, group);
   }
 
   //initLevels() {}
@@ -54,9 +70,9 @@ export default class GameScene extends Phaser.Scene {
   update() {
 
   //initialize marble movement (makes sure it stops)
-    //this.marble.setVelocity(0);
-    //this.marble.setAngularVelocity(0);
-
+    this.marble.setVelocity(0);
+    this.marble.setAngularVelocity(0);
+/*
   //gyro object loop   
     this.gyro.init().then(function(){
       this.gyro.start(function(data){
@@ -73,7 +89,7 @@ export default class GameScene extends Phaser.Scene {
       console.log("DeviceOrientation not supported by device.");
     });
 
-
+*/
   //marble motion with keyboard input
   //will update with accelerometer api
     if(this.cursors.left.isDown){
