@@ -5,43 +5,43 @@
     <title>Doodle aMazing</title>    
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <head>
-  <body>
-	<div class="jumbotron" id="greeting" style="background-color: #00a8a7 !important;">
-	  <img src="./src/assets/imgs/logo.png" class="img-fluid" alt="Responsive image">
-	  <hr class="my-4">
-	  <p class="lead">
-	  	<input type="file" id="pic" accept="image/*" style="color: black">
-	    <a class="btn btn-light btn-lg" id="rulesButton" role="button" style="color: black">Rules</a>
-	  </p>
-	</div>
-	<div class="jumbotron" id="rules" style="display: none; background-color: #00a8a7 !important;">
-		<h1 class="display-4" style="color: black">Rules</h1>
-		<div class="container">
-		  <div class="row">
-		    <div class="col-sm">
-		      	 <ul class="list-group" id="rulesText"></ul>
-		    </div>
-		    <div class="col-sm">
-		      <img src="./src/assets/example_doodle.jpg" class="img-fluid" alt="Responsive image">
-		    </div>
-		  </div>
-		</div>
-	  </p>
-	  <hr class="my-4">
-	  <p class="lead">
-	    <a class="btn btn-light btn-lg" id="backButton" role="button" style="color: black">Back</a>
-	  </p>
-	</div>
-    <canvas id="canvas" width="1" height="1"></canvas>
-    </div>
-    <div id="loader" style="display: none;">
-    	<div class="d-flex justify-content-center">
-    		<div class="spinner-border text-info" role="status" style="width: 10rem; height: 10rem;"></div>
-		</div>
-		<hr class="my-4">
-		<div class="d-flex justify-content-center">
-			<h1 id="loadtext" class="display-4" style="color: black">Doodle Amazing</h1>
-		</div>
-	</div>
-  </body>
+    <body>
+        <div class="jumbotron" id="greeting" style="background-color: #00a8a7 !important; max-height: 100% !important">
+          <img id="logoImg" class="img-fluid" alt="Responsive image">
+          <hr class="my-4">
+          <p class="lead">
+            <input type="file" id="pic" accept="image/*" capture="environment" style="color: black">
+            <a class="btn btn-light btn-lg" id="rulesButton" role="button" style="color: black">Rules</a>
+          </p>
+        </div>
+        <div class="jumbotron" id="rules" style="display: none; background-color: #00a8a7 !important;max-height: 100% !important">
+            <h1 class="display-4" style="color: black">Rules</h1>
+            <div class="container">
+              <div class="row">
+                <div class="col-sm">
+                     <ul class="list-group" id="rulesText"></ul>
+                </div>
+                <div class="col-sm">
+                  <img id="exampleImg" class="img-fluid" alt="Responsive image">
+                </div>
+              </div>
+            </div>
+          </p>
+          <hr class="my-4">
+          <p class="lead">
+            <a class="btn btn-light btn-lg" id="backButton" role="button" style="color: black">Back</a>
+          </p>
+        </div>
+        <canvas id="canvas" width="1" height="1"></canvas>
+        </div>
+        <div id="loader" style="display: none;">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-info" role="status" style="width: 10rem; height: 10rem;"></div>
+            </div>
+            <hr class="my-4">
+            <div class="d-flex justify-content-center">
+                <h1 id="loadtext" class="display-4" style="color: black">Doodle Amazing</h1>
+            </div>
+        </div>
+    </body>
   </html>

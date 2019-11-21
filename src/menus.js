@@ -1,3 +1,5 @@
+const pathToLogo = require('./assets/imgs/logo.png');
+const pathToExample = require('./assets/imgs/example_doodle.jpg');
 function toggleRules(){
 	const greetingDiv = document.getElementById("greeting");
 	const rules = document.getElementById("rules");
@@ -40,6 +42,10 @@ module.exports = {
 	},
 
 	initMainMenu: function(){
+		const logo = document.getElementById("logoImg");
+		logo.src = pathToLogo;
+		const example = document.getElementById("exampleImg");
+		example.src = pathToExample;
 	    const greetingDiv = document.getElementById("greeting");
 		greetingDiv.style.display = "";
 		const rulesText = document.getElementById("rulesText");
