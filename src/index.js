@@ -2,18 +2,14 @@ import Phaser from "phaser";
 import Preloader from './Preloader';
 import MainMenu from './MainMenu';
 import GameScene from './GameScene';
-
-import logoImg from "./assets/logo.png";
-
+import Menus from './Menus.js'
 import doodleReader from './doodleReader';
-import {addImageProcess} from './doodleReader';
 import cannyEdgeDetector from 'canny-edge-detector';
 require("babel-polyfill");
 
 // User image input
+Menus.initMainMenu(); 
 doodleReader.waitForInput(cannyEdgeDetector).then(coordinates => {
-  console.log(coordinates["ball"]);
-  console.log(coordinates["hole"]);
   setup(coordinates);
 });
 

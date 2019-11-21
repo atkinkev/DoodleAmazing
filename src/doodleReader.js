@@ -1,3 +1,5 @@
+const menuController = require('./Menus.js');
+
 async function getEdgeCoordinates(imagesrc){
 	var coordinateArray = [];
 	let image = await promiseLoad(imagesrc);
@@ -49,27 +51,19 @@ async function promiseLoad(src){
 */
 async function waitForInput(cannyEdgeDetector){
 	var inputElement = document.getElementById("pic");
-	const progressText = document.getElementById("loadtext");
 	return new Promise((resolve, reject) => {
 		inputElement.onchange = function(event) {
-
 		  	var image = inputElement.files[0];
 		  	var reader = new FileReader();
+		  	menuController.removeMainMenu();
+		  	menuController.toggleLoader(true);
 		    reader.onload = function(e){
-		    	const greetingDiv = document.getElementById("greeting");
-				greetingDiv.remove();
-				const loader = document.getElementById("loader")
-				loader.style.display = "inline";
-		    	// remove upload button
-		      	inputElement.style.display = "none";
-		     	 // run image through canny edge detector
-		     	progressText.innerText = "Prepping image...";
 		      	prepImage(e.target.result, cannyEdgeDetector).then(resultImage =>{
-		      		progressText.innerText = "Gathering wall coordinates...";
+		      		menuController.updateLoadingText("Finding wall coordinates...");
 			        getEdgeCoordinates(resultImage.toDataURL()).then(wallCoordinates =>{
-			        	progressText.innerText = 'height: ' + window.innerHeight + ' width: ' + window.innerWidth;
+			        	menuController.updateLoadingText("Finding ball...");
 			        	findBall(resultImage.resize({"width":325}).toDataURL()).then(ballCoordinates =>{
-			        		progressText.innerText = "Finding hole...";
+			        		menuController.updateLoadingText("Finding hole...");
 			        		findHole(resultImage.resize({"width":325}).toDataURL()).then(holeCoordinates =>{
 			        			const gameCoordinates = 
 			        			{
@@ -78,9 +72,8 @@ async function waitForInput(cannyEdgeDetector){
 			        			hole: holeCoordinates,
 			        			max_height: resultImage.height
 			        			}
-			        			loader.style.display = "none";
 			        			const imageCanvas = document.getElementById("canvas");
-			        			imageCanvas.remove();
+			        			menuController.toggleLoader(false);
 			          			resolve(gameCoordinates);
 			        		})
 			          	})
@@ -95,9 +88,10 @@ async function waitForInput(cannyEdgeDetector){
 async function findHole(imagesrc){
 	let image = await promiseLoad(imagesrc);
 	// make kernel model for a circle
-	const ellipse = [
-	  [1, 0, 0, 0, 0, 0, -1, -1, -1, 0, 0, 0, 0, 0, 1],
-	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+	// -1 caps on corners to prefer smaller x's
+	const crossKernel = [
+	  [-1, -1, 0, 0, 0, 0, -1, -1, -1, 0, 0, 0, 0, -1, -1],
+	  [-1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1],
 	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
 	  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
 	  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
@@ -109,8 +103,8 @@ async function findHole(imagesrc){
 	  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
 	  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
 	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-	  [1, 0, 0, 0, 0, 0, -1, -1, -1, 0, 0, 0, 0, 0, 1],
+	  [-1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1],
+	  [-1, -1, 0, 0, 0, 0, -1, -1, -1, 0, 0, 0, 0, -1, -1],
 	];
 
 	var canvas=document.getElementById("canvas");
@@ -123,8 +117,8 @@ async function findHole(imagesrc){
 	var ch=canvas.height;
 
 	// Calculate center of our kernel
-	var halfHeight = Math.floor(ellipse.length / 2);
-	var halfWidth = Math.floor(ellipse.length / 2);
+	var halfHeight = Math.floor(crossKernel.length / 2);
+	var halfWidth = Math.floor(crossKernel.length / 2);
 
 	ctx.drawImage(image, canvas.width / 2 - image.width / 2, canvas.height / 2 - image.height / 2);
 	var imageData = ctx.getImageData(0, 0, cw, ch);
@@ -154,19 +148,19 @@ async function findHole(imagesrc){
 	  			// More simply: currentIndex + rows away + columns away
 	  			elipY++;
 	  			var pUnderReview = pIndex + (vertOffset * cw * 4) + (horizOffset * 4);
-	  			var score = ellipse[elipY][elipX] * data[pUnderReview];
+	  			var score = crossKernel[elipY][elipX] * data[pUnderReview];
 	  			if (score > 0){
 	  				curScore++;
 	  			}
 	  		}
 	  	}
 		if (curScore > bestScore){
-			console.log(curScore);
 			bestScore = curScore;
 			bestCoord = [x, y];
 		}
 	  }
 	}
+	// return x, y of x
 	bestCoord[0] = bestCoord[0] * 2;
 	bestCoord[1] = bestCoord[1] * 2;
 	return bestCoord;
@@ -176,21 +170,21 @@ async function findBall(imagesrc){
 	let image = await promiseLoad(imagesrc);
 	// make kernel model for a circle
 	const ellipse = [
-	  [0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+	  [0, 0, 0, 0, 0, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0],
 	  [0, 0, 1, 1, 1, , 0, 0, 1, 1, 1, 1, 0, 0, 0],
 	  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
 	  [0, 1, , 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
 	  [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
-	  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	  [1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 0, 1],
-	  [1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 0, 1],
-	  [1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 0, 1],
-	  [1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 0, 1],
+	  [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+	  [1, 1, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 1, 1],
+	  [2, 1, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 1, 2],
+	  [1, 1, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 1, 1],
+	  [1, 1, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 1, 1],
+	  [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+	  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
 	  [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
-	  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+	  [0, 0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 0],
 	];
 
 	var canvas=document.getElementById("canvas");
@@ -241,12 +235,12 @@ async function findBall(imagesrc){
 	  		}
 	  	}
 		if (curScore > bestScore){
-			console.log(curScore);
 			bestScore = curScore;
 			bestCoord = [x, y];
 		}
 	  }
 	}
+	// return x, y of circle
 	bestCoord[0] = bestCoord[0] * 2;
 	bestCoord[1] = bestCoord[1] * 2;
 	return bestCoord;
