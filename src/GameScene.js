@@ -4,6 +4,13 @@ import wall from "./assets/imgs/black_pixel.png"
 import dpad from "./assets/imgs/pad.png";
 import GyroNorm from 'gyronorm';
 var _coordinates;
+var text;
+var gx;
+var gy;
+var gz;
+
+var zerox;
+var zeroy;
 
 export default class GameScene extends Phaser.Scene {
 
@@ -18,10 +25,14 @@ export default class GameScene extends Phaser.Scene {
       this.load.image('ball', ball);
       this.load.image('pad', ball);
       this.load.image('wall', wall);
-
+      /*
       //adding in new gyronorm object
       var gn = new GyroNorm();
       this.gyro = gn;
+      */
+
+      zerox = 60000;
+      zeroy = 60000;
   }
 
   create(coordinates) {
@@ -34,15 +45,21 @@ export default class GameScene extends Phaser.Scene {
       this.wall = this.physics.add.image(coordinate['X'] * sizingRatio, coordinate['Y'] * sizingRatio, 'wall');
     }
 
-// This line of code drops the marble where the drawing indicates. We'll need this later.
-    this.marble = this.physics.add.image(coordinates["ball"][0]  + 50,coordinates["ball"][1] + 25, 'ball');
-    
+
+    text = this.add.text(10, 10, '', {font: '12px Courier', fill: '#00ff00'});
+
+    window.addEventListener('deviceorientation', this.handleOrientation, true);
+
+    gx = coordinates["ball"][0] + 50;
+    gy = coordinates["ball"][1] + 25;
+
+    // This line of code drops the marble where the drawing indicates. We'll need this later.
+    this.marble = this.physics.add.image(gx, gy, 'ball');
     this.marble.setCircle(46);
     this.marble.setFriction(0.005);
     this.marble.setCollideWorldBounds(true);
     this.marble.setBounce(1);
     //marble.setVelocity(150);
-
   }
 
   //initLevels() {}
@@ -54,25 +71,19 @@ export default class GameScene extends Phaser.Scene {
   update() {
 
   //initialize marble movement (makes sure it stops)
-    //this.marble.setVelocity(0);
-    //this.marble.setAngularVelocity(0);
 
-  //gyro object loop   
-    this.gyro.init().then(function(){
-      this.gyro.start(function(data){
-            //test printing
-            console.log("Alpha = " + data.do.alpha);
-            console.log("Beta = " + data.do.beta);
-            console.log("Gamma = " + data.do.gamma);
-            console.log("Absolute = " + data.do.absolute);
-      this.marble.setAccelerationX(data.dm.x);
-      this.marble.setAccelerationY(data.dm.y);
+    text.setText([
+      'x: ' + gx,
+      'y: ' + gy
+      ]);
 
-      });
-    }).catch(function(e){
-      console.log("DeviceOrientation not supported by device.");
-    });
+    console.log([
+      'x: ' + gx,
+      'y: ' + gy
+      ]);
 
+    //this.marble.setVelocity(gx, gy);
+    this.marble.setVelocityY(gy);
 
   //marble motion with keyboard input
   //will update with accelerometer api
@@ -99,8 +110,22 @@ export default class GameScene extends Phaser.Scene {
 
   //wallCollision() {}
 
-  handleOrientation(e) {
+  handleOrientation (event) {
 
+    if(zerox == 60000){
+      zerox = event.beta;
+      zeroy = event.gamma;
+    }
+
+//mozilla developer code
+    gx = (event.beta - zerox);
+    gy = (event.gamma - zeroy);
+
+    if ( gx > 90 ) {gx = 90};
+    if ( gx < -90 ) {gx = -90};
+
+    //gx += 90;
+    //gy += 90;
   }
 
   //finishLevel() {}
