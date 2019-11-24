@@ -27,6 +27,12 @@ export default class GameScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
 
     for(var coordinate of _coordinates){
+      if(Math.abs(coordinate['X'] - coordinates["ball"][0]) < 20 && Math.abs(coordinate['Y'] - coordinates["ball"][1]) < 20){
+        continue;
+      }
+      if(Math.abs(coordinate['X'] - coordinates["hole"][0]) < 20 && Math.abs(coordinate['Y'] - coordinates["hole"][1]) < 20){
+        continue;
+      }
       this.wall = this.physics.add.image(coordinate['X'] * sizingRatio + offset, coordinate['Y'] * sizingRatio, 'wall');
     }
 
