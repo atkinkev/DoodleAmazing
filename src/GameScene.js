@@ -45,34 +45,54 @@ export default class GameScene extends Phaser.Scene {
 
   //test printing
     text = this.add.text(10, 10, 'Game running...', {font: '32px Courier', fill: '#000000'});
-    
+
+    var even =true;
+    var group = this.physics.add.staticGroup();
+    this.physics.world.setFPS(120);
+    console.log(this.physics.world.TILE_BIAS = 64);
+
   //ball placement
     for(var coordinate of _coordinates){
+      even = !even;
       if(Math.abs(coordinate['X'] - coordinates["ball"][0]) < 20 && Math.abs(coordinate['Y'] - coordinates["ball"][1]) < 20){
         continue;
       }
       if(Math.abs(coordinate['X'] - coordinates["hole"][0]) < 20 && Math.abs(coordinate['Y'] - coordinates["hole"][1]) < 20){
         continue;
       }
-      this.wall = this.physics.add.image(coordinate['X'] * sizingRatio + offset, coordinate['Y'] * sizingRatio, 'wall');
+      group.create(coordinate['X'] * sizingRatio + offset, coordinate['Y'] * sizingRatio, 'wall');
+      /*
+      group.setImmovable(true);
+      group.setCircle(1);
+      group.setBounce(0);
+      group.checkCollision.up = true;
+      group.moves = false;
+      */
     }
+    group.refresh();
 
   //ball settings
     this.marble = this.physics.add.image(coordinates["ball"][0] * sizingRatio + offset, coordinates["ball"][1] * sizingRatio, 'ball');
-    this.marble.setCircle(46);
-    this.marble.setFriction(0.005);
+    this.goal = this.physics.add.image(coordinates["hole"][0] * sizingRatio + offset, coordinates["hole"][1] * sizingRatio, 'hole');
+    this.marble.setCircle(15);
     this.marble.setCollideWorldBounds(true);
     this.marble.setBounce(1);
 
   //event listener for the accelerometer
     window.addEventListener('deviceorientation', this.handleOrientation, true);
 
+    console.log(this.marble);
+    this.physics.add.collider(this.marble, group, function(marble){
+      if (marble.body.wasTouching.left || marble.body.touching.left){
+        marble.setVelocityX(1);
+      }
+    });
+
   //ball/hole overlap triggers endgame
     this.physics.add.overlap(this.marble, this.goal, function() {
     text.setText('Game Over');
     return;
     });
-
   }
 
   update() {
@@ -83,7 +103,8 @@ export default class GameScene extends Phaser.Scene {
       'y: ' + gy
       ]);
 
-  //this.marble.setVelocity(gx, gy);
+
+    this.marble.setVelocityX(gx);
     this.marble.setVelocityY(gy);
 
   //marble motion with keyboard input
@@ -112,7 +133,7 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
-  handleOrientation(e) {
+  handleOrientation (event) {
 
   //set the zero values to initial phone position
     if(zerox == 60000){
