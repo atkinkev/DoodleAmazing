@@ -2,30 +2,51 @@ import {Scene} from 'phaser';
 import ball from "./assets/imgs/ball.png";
 import wall from "./assets/imgs/black_pixel.png"
 import dpad from "./assets/imgs/pad.png";
+import hole from "./assets/imgs/hole.png";
+
+//global variables
 var _coordinates;
+var group;
+var text;
+var gx;
+var gy;
+var gz;
+var zerox;
+var zeroy;
+
 
 export default class GameScene extends Phaser.Scene {
 
 
   constructor (config){
-    //Phaser.Scene.call(this, { key: 'GameScene'});
     super(config);
 
   }
 
   preload() {
+
+    //preloading object images
       this.load.image('ball', ball);
       this.load.image('pad', ball);
       this.load.image('wall', wall);
+      this.load.image('hole', hole);
+
+    //set zerox and zeroy to dummy values
+      zerox = 60000;
+      zeroy = 60000;
   }
 
   create(coordinates) {
     var canvasHeight = window.innerHeight;
     const offset = window.innerWidth / 10;
     _coordinates = coordinates["walls"];
-    const sizingRatio = canvasHeight / coordinates["max_height"];
+    const sizingRatio = canvasHeight / coordinates["max_height"]; //scaling for game canvas
     this.cursors = this.input.keyboard.createCursorKeys();
 
+  //test printing
+    text = this.add.text(10, 10, 'Game running...', {font: '32px Courier', fill: '#000000'});
+    
+  //ball placement
     for(var coordinate of _coordinates){
       if(Math.abs(coordinate['X'] - coordinates["ball"][0]) < 20 && Math.abs(coordinate['Y'] - coordinates["ball"][1]) < 20){
         continue;
@@ -36,22 +57,34 @@ export default class GameScene extends Phaser.Scene {
       this.wall = this.physics.add.image(coordinate['X'] * sizingRatio + offset, coordinate['Y'] * sizingRatio, 'wall');
     }
 
+  //ball settings
     this.marble = this.physics.add.image(coordinates["ball"][0] * sizingRatio + offset, coordinates["ball"][1] * sizingRatio, 'ball');
     this.marble.setCircle(46);
     this.marble.setFriction(0.005);
     this.marble.setCollideWorldBounds(true);
     this.marble.setBounce(1);
-    //marble.setVelocity(150);
+
+  //event listener for the accelerometer
+    window.addEventListener('deviceorientation', this.handleOrientation, true);
+
+  //ball/hole overlap triggers endgame
+    this.physics.add.overlap(this.marble, this.goal, function() {
+    text.setText('Game Over');
+    return;
+    });
 
   }
 
-  //initLevels() {}
-  //showLevel(level) {}
-  //updateCounter() {}
-  //managePause() {}
-  //manageAudio() {}
-
   update() {
+  //test printing
+    text.setText([
+      'Game running...',
+      'x: ' + gx,
+      'y: ' + gy
+      ]);
+
+  //this.marble.setVelocity(gx, gy);
+    this.marble.setVelocityY(gy);
 
   //marble motion with keyboard input
   //will update with accelerometer api
@@ -79,11 +112,22 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
-  //wallCollision() {}
-
   handleOrientation(e) {
 
+  //set the zero values to initial phone position
+    if(zerox == 60000){
+      zerox = event.beta;
+      zeroy = event.gamma;
+    }
+
+  //calculate the angle relative to initial phone position
+    gx = -(event.beta - zerox);
+    gy = (event.gamma - zeroy);
+
+  //ignore values where phone is upside-down
+    if ( gx > 90 ) {gx = 90};
+    if ( gx < -90 ) {gx = -90};
   }
 
-  //finishLevel() {}
+
 }
