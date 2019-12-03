@@ -1,8 +1,10 @@
 import {Scene} from 'phaser';
+import EndGame from './EndGame';
 import ball from "./assets/imgs/ball.png";
 import wall from "./assets/imgs/black_pixel.png"
 import dpad from "./assets/imgs/pad.png";
-import hole from "./assets/imgs/hole.png";
+import hole from "./assets/imgs/target.png";
+import background from "./assets/imgs/blue_panel.png"
 
 //global variables
 var _coordinates;
@@ -13,7 +15,7 @@ var gy;
 var gz;
 var zerox;
 var zeroy;
-
+var scaleRatio; //scaling for differing DPR
 
 export default class GameScene extends Phaser.Scene {
 
@@ -30,10 +32,16 @@ export default class GameScene extends Phaser.Scene {
       this.load.image('pad', ball);
       this.load.image('wall', wall);
       this.load.image('hole', hole);
+      //this.load.image('background', background);
+      
+
 
     //set zerox and zeroy to dummy values
       zerox = 60000;
       zeroy = 60000;
+
+    //set scale ratio
+      scaleRatio = window.devicePixelRatio / 3;
   }
 
   create(coordinates) {
@@ -41,10 +49,17 @@ export default class GameScene extends Phaser.Scene {
     const offset = window.innerWidth / 10;
     _coordinates = coordinates["walls"];
     const sizingRatio = canvasHeight / coordinates["max_height"]; //scaling for game canvas
+    
+    /*
+    this.background = this.add.image(0, 0, "background");
+    this.background.setOrigin(0, 0);
+    this.background.setDisplaySize(window.innerWidth, window.innerHeight);
+    */
+
     this.cursors = this.input.keyboard.createCursorKeys();
 
   //test printing
-    text = this.add.text(10, 10, 'Game running...', {font: '32px Courier', fill: '#000000'});
+    text = this.add.text(10, 10, '', {font: '32px Courier', fill: '#000000'});
 
     var even =true;
     var group = this.physics.add.staticGroup();
@@ -75,6 +90,7 @@ export default class GameScene extends Phaser.Scene {
     this.marble = this.physics.add.image(coordinates["ball"][0] * sizingRatio + offset, coordinates["ball"][1] * sizingRatio, 'ball');
     this.goal = this.physics.add.image(coordinates["hole"][0] * sizingRatio + offset, coordinates["hole"][1] * sizingRatio, 'hole');
     this.marble.setCircle(15);
+    
     this.marble.setCollideWorldBounds(true);
     this.marble.setBounce(1);
 
@@ -89,10 +105,7 @@ export default class GameScene extends Phaser.Scene {
     });
 
   //ball/hole overlap triggers endgame
-    this.physics.add.overlap(this.marble, this.goal, function() {
-    text.setText('Game Over');
-    return;
-    });
+    this.physics.add.overlap(this.marble, this.goal, this.gameOver.bind(this));
   }
 
   update() {
@@ -148,6 +161,11 @@ export default class GameScene extends Phaser.Scene {
   //ignore values where phone is upside-down
     if ( gx > 90 ) {gx = 90};
     if ( gx < -90 ) {gx = -90};
+  }
+
+  gameOver () {
+      this.scene.pause();
+      this.scene.launch('EndGame');
   }
 
 

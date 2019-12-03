@@ -1,7 +1,6 @@
 import Phaser from "phaser";
-import Preloader from './Preloader';
-import MainMenu from './MainMenu';
 import GameScene from './GameScene';
+import EndGame from "./EndGame";
 import Menus from './Menus.js'
 import doodleReader from './doodleReader';
 import cannyEdgeDetector from 'canny-edge-detector';
@@ -45,10 +44,9 @@ function setup(coordinates){
   var game = new Phaser.Game(config);
 
   //method of adding scenes from Unbaffling
-  
-  //game.scene.add('Preloader', Preloader);
-  //game.scene.add('MainMenu', MainMenu);
+
   game.scene.add('GameScene', GameScene);
+  game.scene.add('EndGame', EndGame);
 
   function preload() {
 
