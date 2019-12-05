@@ -59,11 +59,11 @@ async function waitForInput(cannyEdgeDetector){
 		  	menuController.toggleLoader(true);
 		    reader.onload = function(e){
 		      	prepImage(e.target.result, cannyEdgeDetector, false).then(notCannied =>{
-		      		menuController.updateLoadingText("Finding walls...");
+		      		menuController.updateLoadingText("Finding Walls...");
 			        getEdgeCoordinates(notCannied.toDataURL()).then(wallCoordinates =>{
-			        	menuController.updateLoadingText("Finding ball...");
+			        	menuController.updateLoadingText("Finding Ball...");
 			        	findHole(notCannied.resize({"width":325}).toDataURL()).then(holeCoordinates =>{
-			        		menuController.updateLoadingText("Finding hole...");
+			        		menuController.updateLoadingText("Finding Hole...");
 			        		prepImage(e.target.result, cannyEdgeDetector, true).then(yesCannied =>{
 				        		findBall(yesCannied.resize({"width":325}).toDataURL()).then(ballCoordinates =>{
 				        			const gameCoordinates = 
@@ -92,23 +92,22 @@ async function findHole(imagesrc){
 	// make kernel model for a circle
 	// -1 caps on corners to prefer smaller x's
 
-	
 	const crossKernel = [
 	  [-1, -1, 0, 0, 0, -1, -2, -3, -3, -2, -1, -1, 0, 0, 0, -1, -1],
 	  [-1, 1, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 1, -1],
-	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-	  [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
-	  [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
-	  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
-	  [-2, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
-	  [-2, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, -1, -1],
-	  [-3, -1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, -1, -3],
-	  [-2, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, -1, -1],
-	  [-2, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
-	  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
-	  [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,0 ,0 ],
-	  [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
-	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+	  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+	  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+	  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+	  [-2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+	  [-2, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, -1, -1],
+	  [-3, -1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, -1, -3],
+	  [-2, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, -1, -1],
+	  [-2, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+	  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+	  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,0 ,0 ],
+	  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
 	  [-1, 1, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 1 ,-1 ],
 	  [-1, -1, 0, 0, 0, -1, -2, -3, -3, -2, -1, -1, 0, 0, 0, -1, -1],
 	];
@@ -179,17 +178,17 @@ async function findBall(imagesrc){
 	const ellipse = [
 	  [0, 0, 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, 0, 0],
 	  [0, 0, 0, 1, 1, , 0, 0, 0, 0, 1, 1, 0, 0, 0],
-	  [0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
-	  [0, 1, , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+	  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
 	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-	  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	  [1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 0, 1],
-	  [2, 0, 0, 0, 0, -1, -2, -2, -1, 0, 0, 0, 0, 0, 2],
-	  [1, 0, 0, 0, 0, -1, -2, -2, -1, 0, 0, 0, 0, 0, 1],
-	  [1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 0, 1],
+	  [1, 0, 0, 0, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 1],
+	  [1, 0, 0, 0, -1, -1, -2, -2, -1, -1, 0, 0, 0, 0, 1],
+	  [2, 0, 0, 0, -1, -1, -2, -2, -1, -1, 0, 0, 0, 0, 2],
+	  [1, 0, 0, 0, -1, -1, -2, -2, -1, -1, 0, 0, 0, 0, 1],
+	  [1, 0, 0, 0, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 1],
 	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-	  [0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+	  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
+	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
 	  [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
 	  [0, 0, 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, 0, 0],
 	];
@@ -235,9 +234,9 @@ async function findBall(imagesrc){
 	  			// More simply: currentIndex + rows away + columns away
 	  			elipY++;
 	  			var pUnderReview = pIndex + (vertOffset * cw * 4) + (horizOffset * 4);
-	  			var score = ellipse[elipY][elipX] * -data[pUnderReview];
-	  			if(!isNaN(score)){
-	  				curScore += score;
+	  			var score = ellipse[elipY][elipX] * data[pUnderReview];
+	  			if (score > 0){
+	  				curScore++;
 	  			}
 	  		}
 	  	}
@@ -250,6 +249,7 @@ async function findBall(imagesrc){
 	// return x, y of circle
 	bestCoord[0] = bestCoord[0] * 2;
 	bestCoord[1] = bestCoord[1] * 2;
+	console.log(bestScore);
 	return bestCoord;
 }
 
