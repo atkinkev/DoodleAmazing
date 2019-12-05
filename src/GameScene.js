@@ -89,31 +89,27 @@ export default class GameScene extends Phaser.Scene {
   //ball settings
     this.marble = this.physics.add.image(coordinates["ball"][0] * sizingRatio + offset, coordinates["ball"][1] * sizingRatio, 'ball');
     this.goal = this.physics.add.image(coordinates["hole"][0] * sizingRatio + offset, coordinates["hole"][1] * sizingRatio, 'hole');
-    this.marble.setCircle(15);
+    this.marble.setCircle(12, true);
+    this.goal.setSize(10, 10, true);
     
     this.marble.setCollideWorldBounds(true);
-    this.marble.setBounce(1);
+    this.marble.setBounce(0);
 
-  //event listener for the accelerometer
     window.addEventListener('deviceorientation', this.handleOrientation, true);
-
-    console.log(this.marble);
+    
     this.physics.add.collider(this.marble, group, function(marble){
       if (marble.body.wasTouching.left || marble.body.touching.left){
         marble.setVelocityX(1);
       }
     });
 
-  //ball/hole overlap triggers endgame
     this.physics.add.overlap(this.marble, this.goal, this.gameOver.bind(this));
   }
 
   update() {
   //test printing
     text.setText([
-      'Game running...',
-      'x: ' + gx,
-      'y: ' + gy
+      'Game running...'
       ]);
 
 

@@ -18,7 +18,7 @@ function setup(coordinates){
     parent: "doodle-amazing",
     width: window.innerWidth, //* window.devicePixelRatio / 2,
     height: window.innerHeight, //* window.devicePixelRatio / 2,
-    backgroundColor: '#006060',
+    backgroundColor: '#00a8a7',
     physics: {
       default: 'arcade',
       arcade: {

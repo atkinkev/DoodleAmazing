@@ -89,6 +89,8 @@ async function findHole(imagesrc){
 	let image = await promiseLoad(imagesrc);
 	// make kernel model for a circle
 	// -1 caps on corners to prefer smaller x's
+
+	
 	const crossKernel = [
 	  [-1, -1, 0, 0, 0, 0, -1, -1, -1, 0, 0, 0, 0, -1, -1],
 	  [-1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1],
@@ -169,6 +171,8 @@ async function findHole(imagesrc){
 async function findBall(imagesrc){
 	let image = await promiseLoad(imagesrc);
 	// make kernel model for a circle
+
+	
 	const ellipse = [
 	  [0, 0, 0, 0, 0, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0],
 	  [0, 0, 1, 1, 1, , 0, 0, 1, 1, 1, 1, 0, 0, 0],
