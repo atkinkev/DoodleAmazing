@@ -95,14 +95,14 @@ export default class GameScene extends Phaser.Scene {
     this.marble.setCollideWorldBounds(true);
     this.marble.setBounce(0);
 
-    window.addEventListener('deviceorientation', this.handleOrientation, true);
-    
+    window.addEventListener("deviceorientation", this.handleOrientation.bind(this), true);
+    /*
     this.physics.add.collider(this.marble, group, function(marble){
       if (marble.body.wasTouching.left || marble.body.touching.left){
         marble.setVelocityX(1);
       }
     });
-
+    */
     this.physics.add.overlap(this.marble, this.goal, this.gameOver.bind(this));
   }
 
@@ -142,25 +142,15 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
-  handleOrientation (event) {
+  handleOrientation (e) {
 
-  //set the zero values to initial phone position
-    if(zerox == 60000){
-      zerox = event.beta;
-      zeroy = event.gamma;
-    }
-
-  //calculate the angle relative to initial phone position
-    gx = -(event.beta - zerox);
-    gy = (event.gamma - zeroy);
-
-  //ignore values where phone is upside-down
-    if ( gx > 90 ) {gx = 90};
-    if ( gx < -90 ) {gx = -90};
+    this.marble.setVelocityX(e.beta * 12)
+    this.marble.setVelocityY(e.gamma * -12)
   }
 
   gameOver () {
       this.scene.pause();
+      text.setText(['']);
       this.scene.launch('EndGame');
   }
 

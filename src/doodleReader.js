@@ -59,7 +59,7 @@ async function waitForInput(cannyEdgeDetector){
 		  	menuController.toggleLoader(true);
 		    reader.onload = function(e){
 		      	prepImage(e.target.result, cannyEdgeDetector).then(resultImage =>{
-		      		menuController.updateLoadingText("Finding wall coordinates...");
+		      		menuController.updateLoadingText("Finding walls...");
 			        getEdgeCoordinates(resultImage.toDataURL()).then(wallCoordinates =>{
 			        	menuController.updateLoadingText("Finding ball...");
 			        	findBall(resultImage.resize({"width":325}).toDataURL()).then(ballCoordinates =>{
