@@ -21,7 +21,7 @@ async function getEdgeCoordinates(imagesrc){
 	for (var x = 0; x < cw; x++){
 	  for(var y = 0; y < ch; y++){
 	  	var pIndex = ((x + y * cw) * 4);
-	  	if (data[pIndex] < 100){
+	  	if (data[pIndex] < 80){
 	  		if(skip){
 	  			coordinateArray.push({"X": x, "Y": y});
 	  		}
