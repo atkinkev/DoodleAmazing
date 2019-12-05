@@ -21,7 +21,7 @@ async function getEdgeCoordinates(imagesrc){
 	for (var x = 0; x < cw; x++){
 	  for(var y = 0; y < ch; y++){
 	  	var pIndex = ((x + y * cw) * 4);
-	  	if (data[pIndex] == 255){
+	  	if (data[pIndex] < 100){
 	  		if(skip){
 	  			coordinateArray.push({"X": x, "Y": y});
 	  		}
@@ -58,23 +58,25 @@ async function waitForInput(cannyEdgeDetector){
 		  	menuController.removeMainMenu();
 		  	menuController.toggleLoader(true);
 		    reader.onload = function(e){
-		      	prepImage(e.target.result, cannyEdgeDetector).then(resultImage =>{
+		      	prepImage(e.target.result, cannyEdgeDetector, false).then(notCannied =>{
 		      		menuController.updateLoadingText("Finding walls...");
-			        getEdgeCoordinates(resultImage.toDataURL()).then(wallCoordinates =>{
+			        getEdgeCoordinates(notCannied.toDataURL()).then(wallCoordinates =>{
 			        	menuController.updateLoadingText("Finding ball...");
-			        	findBall(resultImage.resize({"width":325}).toDataURL()).then(ballCoordinates =>{
+			        	findHole(notCannied.resize({"width":325}).toDataURL()).then(holeCoordinates =>{
 			        		menuController.updateLoadingText("Finding hole...");
-			        		findHole(resultImage.resize({"width":325}).toDataURL()).then(holeCoordinates =>{
-			        			const gameCoordinates = 
-			        			{
-			        			walls: wallCoordinates,
-			        			ball: ballCoordinates,
-			        			hole: holeCoordinates,
-			        			max_height: resultImage.height
-			        			}
-			        			const imageCanvas = document.getElementById("canvas");
-			        			menuController.toggleLoader(false);
-			          			resolve(gameCoordinates);
+			        		prepImage(e.target.result, cannyEdgeDetector, true).then(yesCannied =>{
+				        		findBall(yesCannied.resize({"width":325}).toDataURL()).then(ballCoordinates =>{
+				        			const gameCoordinates = 
+				        			{
+				        			walls: wallCoordinates,
+				        			ball: ballCoordinates,
+				        			hole: holeCoordinates,
+				        			max_height: notCannied.height
+				        			}
+				        			const imageCanvas = document.getElementById("canvas");
+				        			menuController.toggleLoader(false);
+				          			resolve(gameCoordinates);
+				        		})
 			        		})
 			          	})
 			        })
@@ -92,21 +94,23 @@ async function findHole(imagesrc){
 
 	
 	const crossKernel = [
-	  [-1, -1, 0, 0, 0, 0, -1, -1, -1, 0, 0, 0, 0, -1, -1],
-	  [-1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1],
-	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-	  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-	  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-	  [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-	  [-1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, -1],
-	  [-1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -1],
-	  [-1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, -1],
-	  [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-	  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-	  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-	  [-1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1],
-	  [-1, -1, 0, 0, 0, 0, -1, -1, -1, 0, 0, 0, 0, -1, -1],
+	  [-1, -1, 0, 0, 0, -1, -2, -3, -3, -2, -1, -1, 0, 0, 0, -1, -1],
+	  [-1, 1, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 1, -1],
+	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+	  [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+	  [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+	  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+	  [-2, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+	  [-2, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, -1, -1],
+	  [-3, -1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, -1, -3],
+	  [-2, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, -1, -1],
+	  [-2, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+	  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+	  [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,0 ,0 ],
+	  [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+	  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+	  [-1, 1, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 1 ,-1 ],
+	  [-1, -1, 0, 0, 0, -1, -2, -3, -3, -2, -1, -1, 0, 0, 0, -1, -1],
 	];
 
 	var canvas=document.getElementById("canvas");
@@ -125,7 +129,7 @@ async function findHole(imagesrc){
 	ctx.drawImage(image, canvas.width / 2 - image.width / 2, canvas.height / 2 - image.height / 2);
 	var imageData = ctx.getImageData(0, 0, cw, ch);
 	var data = imageData.data;
-	var bestScore = 0;
+	var bestScore = Number.NEGATIVE_INFINITY;
 	var bestCoord = [];
 	var curScore = 0;
 	var once = true;
@@ -150,9 +154,9 @@ async function findHole(imagesrc){
 	  			// More simply: currentIndex + rows away + columns away
 	  			elipY++;
 	  			var pUnderReview = pIndex + (vertOffset * cw * 4) + (horizOffset * 4);
-	  			var score = crossKernel[elipY][elipX] * data[pUnderReview];
-	  			if (score > 0){
-	  				curScore++;
+	  			var score = crossKernel[elipY][elipX] * -data[pUnderReview];
+	  			if(!isNaN(score)){
+	  				curScore += score;
 	  			}
 	  		}
 	  	}
@@ -170,25 +174,24 @@ async function findHole(imagesrc){
 
 async function findBall(imagesrc){
 	let image = await promiseLoad(imagesrc);
-	// make kernel model for a circle
+	// make kernel model for a circle (Minecraft style)
 
-	
 	const ellipse = [
-	  [0, 0, 0, 0, 0, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0],
-	  [0, 0, 1, 1, 1, , 0, 0, 1, 1, 1, 1, 0, 0, 0],
-	  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-	  [0, 1, , 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
-	  [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
-	  [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	  [1, 1, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 1, 1],
-	  [2, 1, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 1, 2],
-	  [1, 1, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 1, 1],
-	  [1, 1, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 1, 1],
-	  [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-	  [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
-	  [0, 0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 0],
+	  [0, 0, 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, 0, 0],
+	  [0, 0, 0, 1, 1, , 0, 0, 0, 0, 1, 1, 0, 0, 0],
+	  [0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+	  [0, 1, , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+	  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+	  [1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 0, 1],
+	  [2, 0, 0, 0, 0, -1, -2, -2, -1, 0, 0, 0, 0, 0, 2],
+	  [1, 0, 0, 0, 0, -1, -2, -2, -1, 0, 0, 0, 0, 0, 1],
+	  [1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 0, 1],
+	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+	  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+	  [0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+	  [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+	  [0, 0, 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, 0, 0],
 	];
 
 	var canvas=document.getElementById("canvas");
@@ -207,7 +210,7 @@ async function findBall(imagesrc){
 	ctx.drawImage(image, canvas.width / 2 - image.width / 2, canvas.height / 2 - image.height / 2);
 	var imageData = ctx.getImageData(0, 0, cw, ch);
 	var data = imageData.data;
-	var bestScore = 0;
+	var bestScore = Number.NEGATIVE_INFINITY;
 	var bestCoord = [];
 	var curScore = 0;
 	var once = true;
@@ -232,9 +235,9 @@ async function findBall(imagesrc){
 	  			// More simply: currentIndex + rows away + columns away
 	  			elipY++;
 	  			var pUnderReview = pIndex + (vertOffset * cw * 4) + (horizOffset * 4);
-	  			var score = ellipse[elipY][elipX] * data[pUnderReview];
-	  			if (score > 0){
-	  				curScore++;
+	  			var score = ellipse[elipY][elipX] * -data[pUnderReview];
+	  			if(!isNaN(score)){
+	  				curScore += score;
 	  			}
 	  		}
 	  	}
@@ -253,7 +256,7 @@ async function findBall(imagesrc){
 /* prepImage()
 ** Behavior: Helper function for processing image and applying canny edge filter
 */
-async function prepImage(img_src, canny){
+async function prepImage(img_src, canny, useCanny){
 	const { Image } = require('image-js');
 	let image = await Image.load(img_src);
 	if (image.width < image.height){
@@ -261,8 +264,10 @@ async function prepImage(img_src, canny){
 	}
 	image = image.resize({"width": 650});
 	let grey = image.grey();
-	const edge = canny(grey);
-	return edge;
+	if(useCanny){
+		grey = canny(grey, {lowThreshold: 25, highThreshold: 50});
+	}
+	return grey;
 }
 
 module.exports.waitForInput = waitForInput;

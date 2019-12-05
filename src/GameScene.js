@@ -64,7 +64,7 @@ export default class GameScene extends Phaser.Scene {
     var even =true;
     var group = this.physics.add.staticGroup();
     this.physics.world.setFPS(120);
-    console.log(this.physics.world.TILE_BIAS = 64);
+    this.physics.world.TILE_BIAS = 64;
 
   //ball placement
     for(var coordinate of _coordinates){
@@ -96,13 +96,13 @@ export default class GameScene extends Phaser.Scene {
     this.marble.setBounce(0);
 
     window.addEventListener("deviceorientation", this.handleOrientation.bind(this), true);
-    /*
+    
     this.physics.add.collider(this.marble, group, function(marble){
       if (marble.body.wasTouching.left || marble.body.touching.left){
         marble.setVelocityX(1);
       }
     });
-    */
+    
     this.physics.add.overlap(this.marble, this.goal, this.gameOver.bind(this));
   }
 
