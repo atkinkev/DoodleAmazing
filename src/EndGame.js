@@ -5,6 +5,7 @@ import menuColor from './assets/imgs/red_panel.png';
 import menuButton from './assets/imgs/red_button07.png';
 import retButton from './assets/imgs/return.png';
 import exitButton from './assets/imgs/exitRight.png';
+import menuController from './Menus.js';
 
 export default class EndGame extends Phaser.Scene {
 
@@ -51,7 +52,10 @@ export default class EndGame extends Phaser.Scene {
 
   		this.button2.setInteractive()
   			.on('pointerdown', () => {
-  				//exit code here
+          //this.scene.stop();
+          this.scene.stop();
+  				menuController.removeGameCanvas();
+          menuController.initMainMenu();
   			});  		
   		//test printing
   		//var congrats = this.add.text(50, 50, 'You Win!', {font: '32px Courier', fill: '#000000'});

@@ -41,6 +41,16 @@ module.exports = {
 		progressText.innerText = text;
 	},
 
+	removeGameCanvas: function(){
+		const canvases = document.getElementsByTagName("CANVAS")
+		for (var item of canvases){
+			if (!item.id){
+				item.remove();
+				location.reload();
+			}
+		}
+	},
+
 	initMainMenu: function(){
 		const logo = document.getElementById("logoImg");
 		logo.src = pathToLogo;
