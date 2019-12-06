@@ -15,7 +15,10 @@ var gy;
 var gz;
 var zerox;
 var zeroy;
-var scaleRatio; //scaling for differing DPR
+var timerEvent;
+var testTime;
+var sumDelta;
+var iterator;
 
 export default class GameScene extends Phaser.Scene {
 
@@ -34,14 +37,12 @@ export default class GameScene extends Phaser.Scene {
       this.load.image('hole', hole);
       //this.load.image('background', background);
       
-
-
     //set zerox and zeroy to dummy values
       zerox = 60000;
       zeroy = 60000;
-
     //set scale ratio
-      scaleRatio = window.devicePixelRatio / 3;
+      //scaleRatio = window.devicePixelRatio / 3;
+      iterator = 0;
   }
 
   create(coordinates) {
@@ -50,6 +51,7 @@ export default class GameScene extends Phaser.Scene {
     _coordinates = coordinates["walls"];
     const sizingRatio = canvasHeight / coordinates["max_height"]; //scaling for game canvas
     
+    timerEvent = this.time.addEvent();
     /*
     this.background = this.add.image(0, 0, "background");
     this.background.setOrigin(0, 0);
@@ -95,7 +97,7 @@ export default class GameScene extends Phaser.Scene {
     this.marble.setBounce(1);
 
   //event listener for the accelerometer
-    window.addEventListener('deviceorientation', this.handleOrientation, true);
+    window.addEventListener('deviceorientation', this.handleOrientation.bind(this), true);
 
     console.log(this.marble);
     this.physics.add.collider(this.marble, group, function(marble){
@@ -108,22 +110,12 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.marble, this.goal, this.gameOver.bind(this));
   }
 
-  update() {
-  //test printing
-    text.setText([
-      'Game running...',
-      'x: ' + gx,
-      'y: ' + gy
-      ]);
-
-
-    this.marble.setVelocityX(gx);
-    this.marble.setVelocityY(gy);
+  update(time, delta) {
 
   //marble motion with keyboard input
   //will update with accelerometer api
     this.marble.setVelocity(0);
-    this.marble.setAngularVelocity(0);
+    this.marble.setAngularVelocity(0); 
 
     if(this.cursors.left.isDown){
       this.marble.setVelocityX(-300);
@@ -146,6 +138,13 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
+  handleTimer (time) {
+    if( testTime < 0 ){
+      testTime = parseFloat(time);
+    }
+
+  }
+
   handleOrientation (event) {
 
   //set the zero values to initial phone position
@@ -156,16 +155,21 @@ export default class GameScene extends Phaser.Scene {
 
   //calculate the angle relative to initial phone position
     gx = -(event.beta - zerox);
-    gy = (event.gamma - zeroy);
+    gy = -(event.gamma - zeroy);
 
   //ignore values where phone is upside-down
     if ( gx > 90 ) {gx = 90};
     if ( gx < -90 ) {gx = -90};
+  
+    this.marble.setVelocityX(gx);
+    this.marble.setVelocityY(gy);  
   }
 
-  gameOver () {
+  gameOver (time) {
+    //var finalTime = time;
       this.scene.pause();
-      this.scene.launch('EndGame');
+    var endGame = this.scene.get("EndGame");
+      endGame.scene.launch(finalTime);
   }
 
 
