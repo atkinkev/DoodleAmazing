@@ -7,10 +7,11 @@ import retButton from './assets/imgs/return.png';
 import exitButton from './assets/imgs/exitRight.png';
 import menuController from './Menus.js';
 
+var failure = false;
+
 export default class EndGame extends Phaser.Scene {
 
 	constructor (config) {
-  	
   	  super(config);
 
   	}
@@ -23,7 +24,7 @@ export default class EndGame extends Phaser.Scene {
   		this.load.image('exitButton', exitButton);
   	}
 
-  	create () {
+  	create (coordinates) {
 
   		this.input.addPointer(1);
 
@@ -36,8 +37,7 @@ export default class EndGame extends Phaser.Scene {
   		this.menuColor.setDisplaySize(275, 170);
   		this.menuBackground.setDisplaySize(275, 150); 
 
-  		var text = this.add.text(widthCenter - 68, heightCenter - 55, 'You Win!', {font: 'Bold 32px Arial', fill: '#00000', boundsAlignH: 'center', boundsAlignV: 'middle'});
-
+  		var text = this.add.text(widthCenter - 110, heightCenter - 55, 'Replay or Exit', {font: 'Bold 32px Arial', fill: '#00000', boundsAlignH: 'center', boundsAlignV: 'middle'});
   		this.button1 = this.add.image(widthCenter - 55, heightCenter + 10, 'menuButton');
   		this.retButton = this.add.image(widthCenter - 55, heightCenter + 10, 'retButton');
 

@@ -61,7 +61,7 @@ export default class GameScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
 
   //test printing
-    text = this.add.text(10, 10, '', {font: '32px Courier', fill: '#000000'});
+    text = this.add.text(10, 10, '', {font: '12px Courier', fill: '#000000'});
 
     var even =true;
     var group = this.physics.add.staticGroup();
@@ -69,6 +69,10 @@ export default class GameScene extends Phaser.Scene {
     this.physics.world.TILE_BIAS = 64;
 
   //ball placement
+    if (_coordinates[0].failure){
+      text.setText(['Image was unable to be converted to game coordinates. Please try another doodle.']);
+      this.gameOver();
+    }
     for(var coordinate of _coordinates){
       even = !even;
       if(Math.abs(coordinate['X'] - coordinates["ball"][0]) < 20 && Math.abs(coordinate['Y'] - coordinates["ball"][1]) < 20){
@@ -100,8 +104,6 @@ export default class GameScene extends Phaser.Scene {
 
   //event listener for the accelerometer
     window.addEventListener('deviceorientation', this.handleOrientation.bind(this), true);
-
-    console.log(this.marble);
 
     this.physics.add.collider(this.marble, group, function(marble){
       if (marble.body.wasTouching.left || marble.body.touching.left){
@@ -178,10 +180,9 @@ export default class GameScene extends Phaser.Scene {
   }
 
 // game over function: passes control to the EndGame menu scene
-  gameOver () {
+  gameOver() {
     //var finalTime = time;
       this.scene.pause();
-      text.setText(['']);
       this.scene.launch('EndGame');
   }
 
