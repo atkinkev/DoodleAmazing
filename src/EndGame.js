@@ -36,6 +36,8 @@ export default class EndGame extends Phaser.Scene {
   		this.menuColor.setDisplaySize(275, 170);
   		this.menuBackground.setDisplaySize(275, 150); 
 
+  		var text = this.add.text(widthCenter - 68, heightCenter - 55, 'You Win!', {font: 'Bold 32px Arial', fill: '#00000', boundsAlignH: 'center', boundsAlignV: 'middle'});
+
   		this.button1 = this.add.image(widthCenter - 55, heightCenter + 10, 'menuButton');
   		this.retButton = this.add.image(widthCenter - 55, heightCenter + 10, 'retButton');
 

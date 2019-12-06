@@ -152,7 +152,7 @@ export default class GameScene extends Phaser.Scene {
 
 
 //handles device orientation calculations
-  handleOrientation (event) {
+  handleOrientation (e) {
 /* merge conflict
   //set the zero values to initial phone position
     if(zerox == 60000){
