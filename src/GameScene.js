@@ -66,7 +66,7 @@ export default class GameScene extends Phaser.Scene {
     var even =true;
     var group = this.physics.add.staticGroup();
     this.physics.world.setFPS(120);
-    console.log(this.physics.world.TILE_BIAS = 64);
+    this.physics.world.TILE_BIAS = 64;
 
   //ball placement
     for(var coordinate of _coordinates){
@@ -91,26 +91,29 @@ export default class GameScene extends Phaser.Scene {
   //ball settings
     this.marble = this.physics.add.image(coordinates["ball"][0] * sizingRatio + offset, coordinates["ball"][1] * sizingRatio, 'ball');
     this.goal = this.physics.add.image(coordinates["hole"][0] * sizingRatio + offset, coordinates["hole"][1] * sizingRatio, 'hole');
-    this.marble.setCircle(15);
+    this.marble.setCircle(12, true);
+    this.goal.setSize(10, 10, true);
     
     this.marble.setCollideWorldBounds(true);
-    this.marble.setBounce(1);
+    this.marble.setBounce(0);
+
 
   //event listener for the accelerometer
     window.addEventListener('deviceorientation', this.handleOrientation.bind(this), true);
 
     console.log(this.marble);
+
     this.physics.add.collider(this.marble, group, function(marble){
       if (marble.body.wasTouching.left || marble.body.touching.left){
         marble.setVelocityX(1);
       }
     });
-
-  //ball/hole overlap triggers endgame
+    
     this.physics.add.overlap(this.marble, this.goal, this.gameOver.bind(this));
   }
 
-  update(time, delta) {
+  update() {
+
 
   //marble motion with keyboard input
   //will update with accelerometer api
@@ -138,15 +141,19 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
+/* defunct timer function
   handleTimer (time) {
     if( testTime < 0 ){
       testTime = parseFloat(time);
     }
 
   }
+*/
 
+
+//handles device orientation calculations
   handleOrientation (event) {
-
+/* merge conflict
   //set the zero values to initial phone position
     if(zerox == 60000){
       zerox = event.beta;
@@ -161,15 +168,21 @@ export default class GameScene extends Phaser.Scene {
     if ( gx > 90 ) {gx = 90};
     if ( gx < -90 ) {gx = -90};
   
-    this.marble.setVelocityX(gx);
-    this.marble.setVelocityY(gy);  
+    this.marble.setVelocityX(gx * 12);
+    this.marble.setVelocityY(gy * 12);  
+*/
+
+    this.marble.setVelocityX(e.beta * 12)
+    this.marble.setVelocityY(e.gamma * -12)
+
   }
 
-  gameOver (time) {
+// game over function: passes control to the EndGame menu scene
+  gameOver () {
     //var finalTime = time;
       this.scene.pause();
-    var endGame = this.scene.get("EndGame");
-      endGame.scene.launch(finalTime);
+      text.setText(['']);
+      this.scene.launch('EndGame');
   }
 
 
