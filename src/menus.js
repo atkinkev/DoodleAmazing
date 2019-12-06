@@ -16,8 +16,9 @@ function toggleRules(){
 var rules =
 [
 "Begin game by uploading or photographing a hand drawn doodle.",
+"Draw an X for the hole and an O for the ball starting position.",
 "Doodles work best with dark ink on light paper with no other markings.",
-"Draw an X for the hole and an O for the ball starting position."
+"Strong shadows may effect the output of your doodle."
 ]
 
 module.exports = {
