@@ -21,12 +21,12 @@ async function getEdgeCoordinates(imagesrc){
 	for (var x = 0; x < cw; x++){
 	  for(var y = 0; y < ch; y++){
 	  	var pIndex = ((x + y * cw) * 4);
-	  	if (data[pIndex] < 80){
+	  	if (data[pIndex] < 100){
   			coordinateArray.push({"X": x, "Y": y});
 	  	}
 	  }
 	}
-	if (coordinateArray.length > 100000){
+	if (coordinateArray.length > 50000){
 		coordinateArray = [{failure: true}];
 	}
 	return coordinateArray;
@@ -250,7 +250,6 @@ async function findBall(imagesrc){
 	// return x, y of circle
 	bestCoord[0] = bestCoord[0] * 2;
 	bestCoord[1] = bestCoord[1] * 2;
-	console.log(bestScore);
 	return bestCoord;
 }
 

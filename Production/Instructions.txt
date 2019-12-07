@@ -1,0 +1,41 @@
+** Install on Android ** 
+If your phone doesn’t already have a file app like My Files or Google Drive, install one from the app store.
+
+** Looking for Samples? **
+Please see sample doodles for guaranteed-to-work doodles
+
+** Modern Stock Android **
+Place APK on device via USB or another file transfer system like Google Drive or Box
+Go to device settings
+Tap “Apps and Notifications”
+Tap “Install Unknown Apps” 
+Tap “My Files” toggle to allow for this app (Or whatever app you will be installing from)
+Go to “My Files” App
+Click on APK you install on your device
+Agree to disclaimer and wait for app to install
+Open app and play!
+
+** Android 7.0 and earlier (and some distro skins) **
+Place APK on device via USB or another file transfer system like Google Drive or Box
+Go to device settings
+Tap “Biometrics and Security” (May also be called Lock Screen and Security)
+Tap “Install Unknown Apps” 
+Tap “My Files” toggle to allow for this app (If using Google Drive you can select this app and run directly from Drive app)
+Go to “My Files” App (Or whatever app you will be installing from)
+Click on APK you install on your device
+Agree to disclaimer and wait for app to install
+Open app and play!
+
+** Android Emulator (Android Studio) **
+Open Android Studio
+Click Tools -> AVD Manager
+Install new device or use an existing one
+Launch emulator
+Drag APK onto device along with any doodle images you’d like to use
+Launch game once it has been installed and play!
+
+** Browser/ iOS (Not officially supported) **
+Visit: DoodleAmazing.appspot.com 
+If attempting from iOS, the device orientation may not work properly depending on your device and browser. It does however work with arrow keys on a computer browser.
+If attempting on mobile, lock device orientation to landscape if possible
+Scaling and device accelerometers are not guaranteed to work on mobile browser

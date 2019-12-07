@@ -2,35 +2,10 @@
 
 ## https://doodleamazing.appspot.com
 
-## Changelog
-KEA 11/4/2019
-* Updated hosted site for midpoint check  
-* Created production APK for midpoint check
-
-KEA 11/3/2019
-* Hosted site for midpoint check
-* Cleaned up files
-* Created express server for bundled code
-* Worked on image coordinates
-* Added coordinates to game!
-
-KEA 10/31/2019
-* Experimented with creating a landing screen  
-* Ported to Mobile!
-* Ported to Browser!
-
-KEA 10/27/2019
-* Updated game flow to begin with image prompt and game not yet loaded in 
-* Added complete processing pipeline image upload -> canny edges -> coordinates read -> game starts 
-* Commented out upload flow so game can easily be tweaked without upload flow each time 
-* Added fix for jpeg images not working 
-
-Up Next  
-* Improve coordinate detection algorithm 
-* Improve landing page looks 
-* Understand wall creation in Phaser 
-* Discuss game flow and integration 
-* Discuss necessity of Cordova vs running in mobile browser 
+## Usage 
+APK can be found in the Production folder  
+Install APK on desired device or emulator  
+See production folder for full documentation 
 
 ## Setup
 Setup npm to include all packages:
@@ -40,18 +15,18 @@ npm install
 run 'npm start'  
 Game will be at: http://localhost/8080   
 
-## Explorting for Phone
-* Test *
-cordova run android (setup target emulator or plugin android with USB debugging turned on)
-
-* Production *
-See : https://cordova.apache.org/docs/en/2.9.0/guide/getting-started/android/ 
-We will need a Mac to export for iPhone 
+## Deploying for Phone
+npm run build
+Webpack will have created dist/bundle.min.js in www folder
+Change script src in index.html to bundle.min.js from bundle.js used in test
+cordova build android
+APK will be found in platforms/android/app/build/outputs/apk/debug
 
 ## Deploying for Web
 npm run build  
 Webpack will have created dist/bundle.min.js 
 Move dist folder to deploy folder  
 Make sure paths make sense  
+Make sure index.html is up to date in www folder
 Deploy via gcloud (https://doodleamazing.appspot.com/)
 
