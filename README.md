@@ -1,6 +1,5 @@
 # Doodle Amazing
-
-## https://doodleamazing.appspot.com
+## Oregon State Senior Project
 
 ## Usage 
 APK can be found in the Production folder  
